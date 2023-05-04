@@ -6,7 +6,7 @@ const Picker= (props: { picker: string, players: Player[] }) => {
 		<div className='col-3 mt-4'>
 			<h3>{props.picker}</h3>
 
-			{props.players.map((player, index) => (
+			{props.players.sort((a, b) => a.team - b.team).map((player, index) => (
 				<div
 					key={index}
 					className='mb-1'
