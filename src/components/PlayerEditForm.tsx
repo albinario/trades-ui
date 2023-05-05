@@ -6,6 +6,8 @@ const PlayerEditForm= (props: { playersAdded: Player[] }) => {
 	const [search, setSearch] = useState('')
 	const [playerToEdit, setPlayerToEdit] = useState(0)
 	const [picker, setPicker] = useState('')
+	const [jersey, setJersey] = useState(0)
+	const [pos, setPos] = useState('')
 
 	const playerEdit = (e: React.FormEvent) => {
 		e.preventDefault()
@@ -37,7 +39,7 @@ const PlayerEditForm= (props: { playersAdded: Player[] }) => {
 	return (
 		<form onSubmit={playerEdit}>
 			<div className='row g-1'>
-				<div className='col-3'>
+				<div className='col'>
 					<input
 						type='text'
 						className='form-control'
@@ -47,7 +49,7 @@ const PlayerEditForm= (props: { playersAdded: Player[] }) => {
 					/>
 				</div>
 
-				<div className='col-3'>
+				<div className='col'>
 					<select
 						className='form-select'
 						onChange={e => setPlayerToEdit(parseInt(e.target.value))}
@@ -72,6 +74,26 @@ const PlayerEditForm= (props: { playersAdded: Player[] }) => {
 						placeholder='Picker'
 						onChange={e => setPicker(e.target.value)}
 						value={picker}
+					/>
+				</div>
+
+				<div className='col'>
+					<input
+						type='number'
+						className='form-control'
+						placeholder='Jersey'
+						onChange={e => setJersey(parseInt(e.target.value))}
+						value={jersey ? jersey : ''}
+					/>
+				</div>
+
+				<div className='col'>
+					<input
+						type='text'
+						className='form-control'
+						placeholder='Pos'
+						onChange={e => setPos(e.target.value)}
+						value={pos}
 					/>
 				</div>
 

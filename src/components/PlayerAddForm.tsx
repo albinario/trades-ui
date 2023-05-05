@@ -54,7 +54,7 @@ const PlayerAdd = (props: { playersAdded: Player[], teams: Team[]}) => {
 	return (
 		<form onSubmit={playerAdd}>
 			<div className='row g-1'>
-				<div className='col-3'>
+				<div className='col'>
 					<input
 						type='text'
 						className='form-control'
@@ -65,7 +65,7 @@ const PlayerAdd = (props: { playersAdded: Player[], teams: Team[]}) => {
 					/>
 				</div>
 
-				<div className='col-3'>
+				<div className='col'>
 					<select
 						className='form-select'
 						onChange={e => setTeam(parseInt(e.target.value))}

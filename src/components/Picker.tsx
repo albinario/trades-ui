@@ -3,7 +3,7 @@ import { logos } from '../util/config'
 
 const Picker= (props: { picker: string, players: Player[] }) => {	
 	return (
-		<div className='col-3 mt-4'>
+		<div className='col mt-5'>
 			<h3>{props.picker}</h3>
 
 			{props.players.sort((a, b) => a.team - b.team).map((player, index) => (
