@@ -8,7 +8,10 @@ export type Player = {
 }
 
 export type PlayerToUpdate = {
-	picker: string
+	picker?: string
+	team?: number
+	jersey?: number
+	pos?: string
 }
 
 export type Team = {

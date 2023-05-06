@@ -11,10 +11,7 @@ const App = () => {
 	useEffect(() => {
 		fetch(`${tradesApi}/players`)
 			.then(res => res.json())
-			.then(players => {
-				setPlayersAdded(players.data)
-				return
-			})
+			.then(players => setPlayersAdded(players.data))
 			.catch(err => console.error(err))
 	}, [])
 
@@ -22,7 +19,11 @@ const App = () => {
 	useEffect(() => {
 		fetch(`${nhlApi}/teams`)
 			.then(res => res.json())
-			.then(teams => setTeams(teams.teams))
+			.then(teams => setTeams(
+				teams.teams
+					.sort((a: Player, b: Player) => a.name.localeCompare(b.name))
+				)
+			)
 			.catch(err => console.error(err))
 	}, [])
 
@@ -31,12 +32,13 @@ const App = () => {
 			<h2>Add</h2>
 			<PlayerAddForm
 				playersAdded={playersAdded}
-				teams={teams.sort((a,b) => a.name.localeCompare(b.name))}
+				teams={teams}
 			/>
 
 			<h2 className='mt-4'>Edit</h2>
 			<PlayerEditForm
 				playersAdded={playersAdded}
+				teams={teams}
 			/>
 
 			<Picker

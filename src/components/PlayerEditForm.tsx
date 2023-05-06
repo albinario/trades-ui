@@ -1,11 +1,12 @@
 import { useState } from 'react'
-import { Player, PlayerToUpdate } from '../types'
+import { Player, PlayerToUpdate, Team } from '../types'
 import { tradesApi } from '../util/config'
 
-const PlayerEditForm= (props: { playersAdded: Player[] }) => {
+const PlayerEditForm= (props: { playersAdded: Player[], teams: Team[] }) => {
 	const [search, setSearch] = useState('')
 	const [playerToEdit, setPlayerToEdit] = useState(0)
 	const [picker, setPicker] = useState('')
+	const [team, setTeam] = useState(0)
 	const [jersey, setJersey] = useState(0)
 	const [pos, setPos] = useState('')
 
@@ -18,7 +19,10 @@ const PlayerEditForm= (props: { playersAdded: Player[] }) => {
 		}
 
 		const playerUpdated: PlayerToUpdate = {
-			picker
+			picker,
+			team,
+			jersey,
+			pos
 		}
 
 		fetch(`${tradesApi}/players/${playerToEdit}`, {
@@ -34,6 +38,8 @@ const PlayerEditForm= (props: { playersAdded: Player[] }) => {
 
 		setSearch('')
 		setPicker('')
+		setJersey(0)
+		setPos('')
 	}
 
 	return (
@@ -56,7 +62,9 @@ const PlayerEditForm= (props: { playersAdded: Player[] }) => {
 					>
 						<option value={0}>Player</option>
 						{props.playersAdded
-							.filter(player => player.name.toLowerCase().includes(search.toLocaleLowerCase()))
+							.filter(player => player.name.toLowerCase()
+								.includes(search.toLocaleLowerCase())
+							)
 							.map((player, index) => (
 								<option
 									key={index}
@@ -75,6 +83,21 @@ const PlayerEditForm= (props: { playersAdded: Player[] }) => {
 						onChange={e => setPicker(e.target.value)}
 						value={picker}
 					/>
+				</div>
+
+				<div className='col'>
+					<select
+						className='form-select'
+						onChange={e => setTeam(parseInt(e.target.value))}
+					>
+						<option value={0}>Team</option>
+						{props.teams.map((team, index) => (
+							<option
+								key={index}
+								value={team.id}
+							>{team.name}</option>
+						))}
+					</select>
 				</div>
 
 				<div className='col'>
