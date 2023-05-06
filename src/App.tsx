@@ -27,6 +27,8 @@ const App = () => {
 			.catch(err => console.error(err))
 	}, [])
 
+	const playersPicked = playersAdded.filter(player => player.picker !== '')
+
 	return(
 		<div className='row'>
 			<h2>Add</h2>
@@ -43,22 +45,22 @@ const App = () => {
 
 			<Picker
 				picker='Albin'
-				players={playersAdded.filter(player => player.picker === 'A')}
+				players={playersPicked.filter(player => player.picker === 'A')}
 			/>
 
 			<Picker
 				picker='Jakob'
-				players={playersAdded.filter(player => player.picker === 'J')}
+				players={playersPicked.filter(player => player.picker === 'J')}
 			/>
 
 			<Picker
 				picker='Sacke'
-				players={playersAdded.filter(player => player.picker === 'S')}
+				players={playersPicked.filter(player => player.picker === 'S')}
 			/>
 
 			<Picker
 				picker='Ville'
-				players={playersAdded.filter(player => player.picker === 'V')}
+				players={playersPicked.filter(player => player.picker === 'V')}
 			/>
 		</div>
 	)
