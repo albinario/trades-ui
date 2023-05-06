@@ -1,7 +1,7 @@
 import { Player } from '../types'
 import { logos } from '../util/config'
 
-const Picker= (props: { picker: string, players: Player[] }) => {	
+const Picker = (props: { picker: string, players: Player[] }) => {	
 	return (
 		<div className='col mt-5'>
 			<h3>{props.picker}</h3>
