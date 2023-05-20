@@ -4,7 +4,7 @@ import { Player } from '../types'
 
 const Picker = (props: { picker: string, players: Player[] }) => {
 	const removePicker = (id: number) => {
-		fetch(`${tradesApi}/players/${id}`, {
+		fetch(`${tradesApi}/${id}`, {
 			method: 'PATCH',
 			headers: {
 				'Content-Type': 'application/json'

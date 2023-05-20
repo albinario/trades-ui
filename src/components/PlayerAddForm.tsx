@@ -1,25 +1,19 @@
 import { useState } from 'react'
 import { Player, Team } from '../types'
-import { tradesApi } from '../util/config'
 
-const PlayerAdd = (props: { playersAdded: Player[], teams: Team[]}) => {
+const PlayerAdd = (props: { teams: Team[], onSubmit: (player: Player) => void }) => {
 	const [name, setName] = useState('')
 	const [team, setTeam] = useState(0)
 	const [pos, setPos] = useState('')
 	const [jersey, setJersey] = useState(0)
 	const [picker, setPicker] = useState('')
 	const [id, setId] = useState(0)
-
+	
 	const playerAdd = (e: React.FormEvent) => {
 		e.preventDefault()
 
 		if (!team || !pos || !jersey || !picker || !id) {
 			console.log("Missing values")
-			return
-		}
-
-		if (props.playersAdded.find(player => player.id === id)) {
-			console.log("Player already exists")
 			return
 		}
 
@@ -32,20 +26,10 @@ const PlayerAdd = (props: { playersAdded: Player[], teams: Team[]}) => {
 			picker
 		}
 
-		fetch(`${tradesApi}/players`, {
-			method: 'POST',
-			headers: {
-				'Content-Type': 'application/json'
-			},
-			body: JSON.stringify(playerNew)
-		})
-			.then(res => res.json())
-			.then(data => console.log(data))
-			.catch(error => console.error(error))
+		props.onSubmit(playerNew)
 
 		setName('')
 		setPicker('')
-		setTeam(0)
 		setJersey(0)
 		setPos('')
 		setId(0)

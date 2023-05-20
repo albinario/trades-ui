@@ -1,10 +1,9 @@
 import { useState } from 'react'
-import { Player, PlayerToUpdate, Team } from '../types'
-import { tradesApi } from '../util/config'
+import { Player, Team } from '../types'
 
-const PlayerEditForm= (props: { playersAdded: Player[], teams: Team[] }) => {
+const PlayerEditForm= (props: { playersAll: Player[], teams: Team[], onSubmit: (player: Partial<Player>) => void }) => {
 	const [search, setSearch] = useState('')
-	const [playerToEdit, setPlayerToEdit] = useState(0)
+	const [playerToEditId, setPlayerToEditId] = useState(0)
 	const [picker, setPicker] = useState('')
 	const [team, setTeam] = useState(0)
 	const [jersey, setJersey] = useState(0)
@@ -13,28 +12,20 @@ const PlayerEditForm= (props: { playersAdded: Player[], teams: Team[] }) => {
 	const playerEdit = (e: React.FormEvent) => {
 		e.preventDefault()
 
-		if (!playerToEdit) {
+		if (!playerToEditId) {
 			console.log("No player chosen")
 			return
 		}
 
-		const playerUpdated: PlayerToUpdate = {
+		const playerToEdit: Partial<Player> = {
+			id: playerToEditId,
 			picker,
 			team,
 			jersey,
 			pos
 		}
 
-		fetch(`${tradesApi}/players/${playerToEdit}`, {
-			method: 'PATCH',
-			headers: {
-				'Content-Type': 'application/json'
-			},
-			body: JSON.stringify(playerUpdated)
-		})
-			.then(res => res.json())
-			.then(data => console.log(data))
-			.catch(error => console.error(error))
+		props.onSubmit(playerToEdit)
 
 		setSearch('')
 		setPicker('')
@@ -58,10 +49,10 @@ const PlayerEditForm= (props: { playersAdded: Player[], teams: Team[] }) => {
 				<div className='col'>
 					<select
 						className='form-select'
-						onChange={e => setPlayerToEdit(parseInt(e.target.value))}
+						onChange={e => setPlayerToEditId(parseInt(e.target.value))}
 					>
 						<option value={0}>Player</option>
-						{props.playersAdded
+						{props.playersAll
 							.filter(player => player.name.toLowerCase()
 								.includes(search.toLocaleLowerCase())
 							)

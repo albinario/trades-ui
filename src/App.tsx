@@ -1,46 +1,61 @@
 import { useEffect, useState } from 'react'
 import './App.css'
 import { Player, Team } from './types'
-import { nhlApi, tradesApi } from './util/config'
+import { nhlApi } from './util/config'
 import PlayerAddForm from './components/PlayerAddForm'
 import PlayerEditForm from './components/PlayerEditForm'
 import Picker from './components/Picker'
+import * as PlayerAPI from './services/playerAPI'
 
 const App = () => {
-	const [playersAdded, setPlayersAdded] = useState<Player[]>([])
-	useEffect(() => {
-		fetch(`${tradesApi}/players`)
-			.then(res => res.json())
-			.then(players => setPlayersAdded(players.data))
-			.catch(err => console.error(err))
-	}, [])
-
+	const [players, setPlayers] = useState<Player[]>([])
 	const [teams, setTeams] = useState<Team[]>([])
+
 	useEffect(() => {
 		fetch(`${nhlApi}/teams`)
-			.then(res => res.json())
-			.then(teams => setTeams(
-				teams.teams
-					.sort((a: Player, b: Player) => a.name.localeCompare(b.name))
-				)
-			)
-			.catch(err => console.error(err))
+		.then(res => res.json())
+		.then(teams => setTeams(teams.teams.sort((a: Team, b: Team) => a.name.localeCompare(b.name))))
+		.catch(err => console.error(err))
 	}, [])
 
-	const playersPicked = playersAdded.filter(player => player.picker !== '')
+	const _setPlayers = async () => {
+		setPlayers(await PlayerAPI.getPlayers())
+	}
+
+	const addPlayer = async (playerToAdd: Player) => {
+		if (players.find(player => player.id === playerToAdd.id)) {
+			console.log("Player already exists")
+			alert("Player already exists")
+			return
+		}
+		await PlayerAPI.addPlayer(playerToAdd)
+		_setPlayers()
+	}
+
+	const editPlayer = async (playerToEdit: Partial<Player>) => {
+		await PlayerAPI.editPlayer(playerToEdit)
+		_setPlayers()
+	}
+
+	useEffect(() => {
+		_setPlayers()
+	}, [])
+
+	const playersPicked = players.filter((player: Player) => player.picker !== '')
 
 	return(
 		<div className='row'>
 			<h2>Add</h2>
 			<PlayerAddForm
-				playersAdded={playersAdded}
 				teams={teams}
+				onSubmit={addPlayer}
 			/>
 
 			<h2 className='mt-4'>Edit</h2>
 			<PlayerEditForm
-				playersAdded={playersAdded}
+				playersAll={players}
 				teams={teams}
+				onSubmit={editPlayer}
 			/>
 
 			<Picker
