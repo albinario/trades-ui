@@ -1,19 +1,20 @@
 import 'bootstrap-icons/font/bootstrap-icons.css'
-import { logos, tradesApi } from '../util/config'
+import { logos } from '../util/config'
 import { Player } from '../types'
 
-const Picker = (props: { picker: string, players: Player[] }) => {
+interface IProps {
+	picker: string,
+	players: Player[],
+	onRemovePicker: (player: Partial<Player>) => void 
+}
+
+const Picker: React.FC<IProps> = (props) => {
+
 	const removePicker = (id: number) => {
-		fetch(`${tradesApi}/${id}`, {
-			method: 'PATCH',
-			headers: {
-				'Content-Type': 'application/json'
-			},
-			body: JSON.stringify({})
-		})
-			.then(res => res.json())
-			.then(data => console.log(data))
-			.catch(error => console.error(error))
+		const playerToEdit: Partial<Player> = {
+			id
+		}
+		props.onRemovePicker(playerToEdit)
 	}
 
 	return (

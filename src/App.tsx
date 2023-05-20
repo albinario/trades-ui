@@ -32,7 +32,7 @@ const App = () => {
 		_setPlayers()
 	}
 
-	const editPlayer = async (playerToEdit: Partial<Player>) => {
+	const editPlayer = async (playerToEdit: Partial<Player>) => {		
 		await PlayerAPI.editPlayer(playerToEdit)
 		_setPlayers()
 	}
@@ -61,21 +61,25 @@ const App = () => {
 			<Picker
 				picker='Albin'
 				players={playersPicked.filter(player => player.picker === 'A')}
+				onRemovePicker={editPlayer}
 			/>
 
 			<Picker
 				picker='Jakob'
 				players={playersPicked.filter(player => player.picker === 'J')}
+				onRemovePicker={editPlayer}
 			/>
 
 			<Picker
 				picker='Sacke'
 				players={playersPicked.filter(player => player.picker === 'S')}
+				onRemovePicker={editPlayer}
 			/>
 
 			<Picker
 				picker='Ville'
 				players={playersPicked.filter(player => player.picker === 'V')}
+				onRemovePicker={editPlayer}
 			/>
 		</div>
 	)
