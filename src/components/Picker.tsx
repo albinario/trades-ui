@@ -1,10 +1,11 @@
 import 'bootstrap-icons/font/bootstrap-icons.css'
 import { logos } from '../util/config'
 import { Player } from '../types'
+import Missing from './Missing'
 
 interface IProps {
-	picker: string,
-	players: Player[],
+	picker: string
+	players: Player[]
 	onRemovePicker: (player: Partial<Player>) => void 
 }
 
@@ -33,6 +34,12 @@ const Picker: React.FC<IProps> = (props) => {
 					</div>
 				))
 			}
+			{props.players.length < 12 && (
+				<Missing
+					all={false}
+					players={props.players}
+				/>
+			)}
 		</div>
 	)
 }
