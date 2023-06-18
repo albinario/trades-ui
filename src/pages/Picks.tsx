@@ -84,7 +84,7 @@ const Picks = () => {
 
 			{isLoading && (
 				<div>
-					<Spinner animation='border' className='mt-4	' role='status'>
+					<Spinner animation='border' className='mt-4' role='status'>
 						<span className='visually-hidden'>Loading...</span>
 					</Spinner>
 				</div>
@@ -92,29 +92,29 @@ const Picks = () => {
 
 			{!isLoading && (
 				<>
-				<Picker
-					picker='Albin'
-					players={playersPicked.filter(player => player.picker === 'A')}
-					onRemovePicker={editPlayer}
-				/>
+					<Picker
+						picker='Albin'
+						players={playersPicked.filter(player => player.picker === 'A')}
+						onRemovePicker={editPlayer}
+					/>
 
-				<Picker
-					picker='Jakob'
-					players={playersPicked.filter(player => player.picker === 'J')}
-					onRemovePicker={editPlayer}
-				/>
+					<Picker
+						picker='Jakob'
+						players={playersPicked.filter(player => player.picker === 'J')}
+						onRemovePicker={editPlayer}
+					/>
 
-				<Picker
-					picker='Sacke'
-					players={playersPicked.filter(player => player.picker === 'S')}
-					onRemovePicker={editPlayer}
-				/>
+					<Picker
+						picker='Sacke'
+						players={playersPicked.filter(player => player.picker === 'S')}
+						onRemovePicker={editPlayer}
+					/>
 
-				<Picker
-					picker='Ville'
-					players={playersPicked.filter(player => player.picker === 'V')}
-					onRemovePicker={editPlayer}
-				/>
+					<Picker
+						picker='Ville'
+						players={playersPicked.filter(player => player.picker === 'V')}
+						onRemovePicker={editPlayer}
+					/>
 				</>
 			)}
 
