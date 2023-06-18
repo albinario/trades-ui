@@ -28,7 +28,6 @@ const Picks = () => {
 
 		try {
 			const res = await NhlAPI.get<TeamResult>('teams')
-			await new Promise(r => setTimeout(r, 3000))
 			setTeams(res.teams.sort((a: Team, b: Team) => a.name.localeCompare(b.name)))
 
 		// eslint-disable-next-line @typescript-eslint/no-explicit-any
