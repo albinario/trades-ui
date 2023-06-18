@@ -7,14 +7,11 @@ export type Player = {
 	picker: string
 }
 
-// export type PlayerToUpdate = {
-// 	picker?: string
-// 	team?: number
-// 	jersey?: number
-// 	pos?: string
-// }
-
 export type Team = {
 	id: number
 	name: string
+}
+
+export type TeamResult = {
+	teams: Team[]
 }

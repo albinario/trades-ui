@@ -1,22 +1,43 @@
-import { useEffect, useState } from 'react'
-import { Player, Team } from '../types'
-import { nhlApi } from '../util/config'
+import Missing from '../components/Missing'
 import PlayerAddForm from '../components/PlayerAddForm'
 import PlayerEditForm from '../components/PlayerEditForm'
 import Picker from '../components/Picker'
+
+import { useEffect, useState } from 'react'
+
+import Alert from 'react-bootstrap/Alert'
+import Spinner from 'react-bootstrap/Spinner'
+
+import * as NhlAPI from '../services/nhlAPI'
 import * as PlayerAPI from '../services/playerAPI'
-import Missing from '../components/Missing'
+
+import { Player, Team, TeamResult } from '../types'
 
 const Picks = () => {
+	const [error, setError] = useState<string|null>(null)
+	const [isError, setIsError] = useState(false)
+	const [isLoading, setIsLoading] = useState(false)
+
 	const [players, setPlayers] = useState<Player[]>([])
 	const [teams, setTeams] = useState<Team[]>([])
 
-	useEffect(() => {
-		fetch(`${nhlApi}/teams`)
-		.then(res => res.json())
-		.then(teams => setTeams(teams.teams.sort((a: Team, b: Team) => a.name.localeCompare(b.name))))
-		.catch(err => console.error(err))
-	}, [])
+	const getTeams = async () => {
+		setError(null)
+		setIsError(false)
+		setIsLoading(true)
+
+		try {
+			const res = await NhlAPI.get<TeamResult>('teams')
+			await new Promise(r => setTimeout(r, 3000))
+			setTeams(res.teams.sort((a: Team, b: Team) => a.name.localeCompare(b.name)))
+
+		// eslint-disable-next-line @typescript-eslint/no-explicit-any
+		} catch (err: any) {
+			setError(err.message || `Something went wrong when fetching teams`)
+			setIsError(true)
+		}
+		setIsLoading(false)
+	}
 
 	const _setPlayers = async () => {
 		setPlayers(await PlayerAPI.getPlayers())
@@ -24,7 +45,6 @@ const Picks = () => {
 
 	const addPlayer = async (playerToAdd: Player) => {
 		if (players.find(player => player.id === playerToAdd.id)) {
-			console.log("Player already exists")
 			alert("Player already exists")
 			return
 		}
@@ -38,8 +58,13 @@ const Picks = () => {
 	}
 
 	useEffect(() => {
+		getTeams()
 		_setPlayers()
 	}, [])
+
+	if (isError) {
+		return <Alert variant='warning'>{error}</Alert>
+	}
 
 	const playersPicked = players.filter((player: Player) => player.picker !== '')
 
@@ -58,31 +83,43 @@ const Picks = () => {
 				onSubmit={editPlayer}
 			/>
 
-			<Picker
-				picker='Albin'
-				players={playersPicked.filter(player => player.picker === 'A')}
-				onRemovePicker={editPlayer}
-			/>
+			{isLoading && (
+				<div>
+					<Spinner animation='border' className='mt-4	' role='status'>
+						<span className='visually-hidden'>Loading...</span>
+					</Spinner>
+				</div>
+			)}
 
-			<Picker
-				picker='Jakob'
-				players={playersPicked.filter(player => player.picker === 'J')}
-				onRemovePicker={editPlayer}
-			/>
+			{!isLoading && (
+				<>
+				<Picker
+					picker='Albin'
+					players={playersPicked.filter(player => player.picker === 'A')}
+					onRemovePicker={editPlayer}
+				/>
 
-			<Picker
-				picker='Sacke'
-				players={playersPicked.filter(player => player.picker === 'S')}
-				onRemovePicker={editPlayer}
-			/>
+				<Picker
+					picker='Jakob'
+					players={playersPicked.filter(player => player.picker === 'J')}
+					onRemovePicker={editPlayer}
+				/>
 
-			<Picker
-				picker='Ville'
-				players={playersPicked.filter(player => player.picker === 'V')}
-				onRemovePicker={editPlayer}
-			/>
+				<Picker
+					picker='Sacke'
+					players={playersPicked.filter(player => player.picker === 'S')}
+					onRemovePicker={editPlayer}
+				/>
 
-			{playersPicked.length < 48 && (
+				<Picker
+					picker='Ville'
+					players={playersPicked.filter(player => player.picker === 'V')}
+					onRemovePicker={editPlayer}
+				/>
+				</>
+			)}
+
+			{!isLoading && playersPicked.length < 48 && (
 				<Missing
 					all={true}
 					players={playersPicked}
