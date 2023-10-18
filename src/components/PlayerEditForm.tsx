@@ -1,7 +1,7 @@
 import { useState } from 'react'
-import { Player, Team } from '../types'
+import { TPlayer, Team } from '../types'
 
-const PlayerEditForm= (props: { playersAll: Player[], teams: Team[], onSubmit: (player: Partial<Player>) => void }) => {
+const PlayerEditForm= (props: { playersAll?: TPlayer[], teams: Team[], onSubmit: (player: Partial<TPlayer>) => void }) => {
 	const [search, setSearch] = useState('')
 	const [playerToEditId, setPlayerToEditId] = useState(0)
 	const [picker, setPicker] = useState('')
@@ -17,7 +17,7 @@ const PlayerEditForm= (props: { playersAll: Player[], teams: Team[], onSubmit: (
 			return
 		}
 
-		const playerToEdit: Partial<Player> = {
+		const playerToEdit: Partial<TPlayer> = {
 			id: playerToEditId,
 			picker,
 			team,
@@ -52,13 +52,13 @@ const PlayerEditForm= (props: { playersAll: Player[], teams: Team[], onSubmit: (
 						onChange={e => setPlayerToEditId(parseInt(e.target.value))}
 					>
 						<option value={0}>Player</option>
-						{props.playersAll
-							.filter(player => player.name.toLowerCase()
+						{props.playersAll && props.playersAll
+							.filter((player: TPlayer) => player.name.toLowerCase()
 								.includes(search.toLocaleLowerCase())
 							)
-							.map((player, index) => (
+							.map((player: TPlayer) => (
 								<option
-									key={index}
+									key={player.id}
 									value={player.id}
 								>{player.name}</option>
 							))

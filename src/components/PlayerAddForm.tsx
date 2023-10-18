@@ -1,7 +1,7 @@
 import { useState } from 'react'
-import { Player, Team } from '../types'
+import { TPlayer, Team } from '../types'
 
-const PlayerAdd = (props: { teams: Team[], onSubmit: (player: Player) => void }) => {
+const PlayerAdd = (props: { teams: Team[], onSubmit: (player: TPlayer) => void }) => {
 	const [name, setName] = useState('')
 	const [team, setTeam] = useState(0)
 	const [pos, setPos] = useState('')
@@ -13,11 +13,11 @@ const PlayerAdd = (props: { teams: Team[], onSubmit: (player: Player) => void })
 		e.preventDefault()
 
 		if (!team || !pos || !jersey || !picker || !id) {
-			console.log("Missing values")
+			alert("Missing values")
 			return
 		}
 
-		const playerNew: Player = {
+		const playerNew: TPlayer = {
 			id,
 			name,
 			jersey,

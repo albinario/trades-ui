@@ -1,3 +1,20 @@
 img {
 	width: 2em;
 }
+
+table {
+	font-size: .75em;
+}
+
+.back-back {
+	border-left: 1px solid #dee2e6;
+}
+.first {
+	border-left: 1px dashed #dee2e6;
+}
+.last {
+	border-right: 1px dashed #dee2e6;
+}
+.home {
+	background-color: #0f5132;
+}

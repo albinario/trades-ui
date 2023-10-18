@@ -1,21 +1,19 @@
-import { Route, Routes } from 'react-router-dom'
-import './App.css'
 import Navigation from './components/Navigation'
-import Container from 'react-bootstrap/Container'
+import './App.css'
 import Picks from './pages/Picks'
+import Schedule from './pages/Schedule'
+import Container from 'react-bootstrap/Container'
+import { Route, Routes } from 'react-router-dom'
 
-const App = () => {
-	return(
-		<>
-			<Navigation />
+const App = () => (
+	<Container>
+		<Navigation />
 
-			<Container>
-				<Routes>
-					<Route path='/trades-ui' element={<Picks />} />
-				</Routes>
-			</Container>
-		</>
-	)
-}
+		<Routes>
+			<Route path='/trades-ui' element={<Picks />} />
+			<Route path='/schedule' element={<Schedule />} />
+		</Routes>
+	</Container>
+)
 
 export default App
