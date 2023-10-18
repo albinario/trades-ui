@@ -1,18 +1,27 @@
 import axios from 'axios'
-import { tradesApi } from '../util/config'
-import { TPlayer } from '../types'
+import type { Player, PlayersResponse } from '../types'
+
+const BASE_URL = 'https://trades.cyclic.app/players'
+
+const instance = axios.create({
+	baseURL: BASE_URL,
+	timeout: 10000
+})
+
+const get = async <T>(endpoint: string) => {
+	const response = await instance.get<T>(endpoint)
+	return response.data
+}
 
 export const getPlayers = async () => {
-	const res = await axios.get(tradesApi)
-	return res.data.data as TPlayer[]
+	const playersResponse = await get<PlayersResponse>('')
+	return playersResponse.data.filter(player => player.picker)
 }
 
-export const createPlayer = async (player: TPlayer) => {
-	const res = await axios.post(tradesApi, player)
-	return res.data
+export const createPlayer = (player: Player) => {
+	return axios.post(BASE_URL, player)
 }
 
-export const updatePlayer = async (player: Partial<TPlayer>) => {
-	const res = await axios.patch(tradesApi+'/'+player.id, player)
-	return res.data
+export const updatePlayer = (player: Partial<Player>) => {
+	return axios.patch(BASE_URL + '/' + player.id, player)
 }
