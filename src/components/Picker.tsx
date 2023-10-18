@@ -1,12 +1,12 @@
 import 'bootstrap-icons/font/bootstrap-icons.css'
-import { TPlayer } from '../types'
+import { Player } from '../types'
 import Missing from './Missing'
 import Logo from './Logo'
 
 interface IProps {
 	picker: string
-	players?: TPlayer[]
-	onRemovePicker: (player: Partial<TPlayer>) => void
+	players?: Player[]
+	onRemovePicker: (player: Partial<Player>) => void
 }
 
 const Picker: React.FC<IProps> = (props) => {

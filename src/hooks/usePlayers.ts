@@ -1,7 +1,7 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { createPlayer, updatePlayer } from '../services/PlayerAPI'
 import { getPlayers } from '../services/TradesAPI'
-import { TPlayer } from '../types'
+import { Player } from '../types'
 
 const queryKey = ['players']
 
@@ -16,7 +16,7 @@ export const useUpdatePlayer = () => {
 	const queryClient = useQueryClient()
 
 	return useMutation({
-		mutationFn: (playerEdited: Partial<TPlayer>) => updatePlayer(playerEdited),
+		mutationFn: (playerEdited: Partial<Player>) => updatePlayer(playerEdited),
 		onSuccess: () => {
 			queryClient.refetchQueries({
 				queryKey
@@ -29,7 +29,7 @@ export const useCreatePlayer = () => {
 	const queryClient = useQueryClient()
 
 	return useMutation({
-		mutationFn: (playerToAdd: TPlayer) => createPlayer(playerToAdd),
+		mutationFn: (playerToAdd: Player) => createPlayer(playerToAdd),
 		onSuccess: () => {
 			queryClient.refetchQueries({
 				queryKey

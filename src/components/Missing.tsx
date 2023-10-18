@@ -1,8 +1,8 @@
-import { TPlayer } from '../types'
+import { Player } from '../types'
 
 interface IProps {
 	all: boolean
-	players: TPlayer[]
+	players: Player[]
 }
 
 const Missing: React.FC<IProps> = (props) => {

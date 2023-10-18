@@ -1,7 +1,7 @@
 import { useState } from 'react'
-import { TPlayer, Team } from '../types'
+import { Player, Team } from '../types'
 
-const PlayerAdd = (props: { teams: Team[], onSubmit: (player: TPlayer) => void }) => {
+const PlayerAdd = (props: { teams: Team[], onSubmit: (player: Player) => void }) => {
 	const [name, setName] = useState('')
 	const [team, setTeam] = useState(0)
 	const [pos, setPos] = useState('')
@@ -17,7 +17,7 @@ const PlayerAdd = (props: { teams: Team[], onSubmit: (player: TPlayer) => void }
 			return
 		}
 
-		const playerNew: TPlayer = {
+		const playerNew: Player = {
 			id,
 			name,
 			jersey,

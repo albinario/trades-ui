@@ -1,4 +1,4 @@
-export type TPlayer = {
+export type Player = {
 	id: number
 	name: string
 	jersey: number
@@ -61,5 +61,5 @@ export type GamesResult = {
 }
 
 export type PlayersResponse = {
-	data: TPlayer[]
+	data: Player[]
 }

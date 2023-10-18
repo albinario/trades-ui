@@ -4,7 +4,7 @@ import PlayerAddForm from '../components/PlayerAddForm'
 import PlayerEditForm from '../components/PlayerEditForm'
 import { useCreatePlayer, useGetPlayers, useUpdatePlayer } from '../hooks/usePlayers'
 import { useGetTeams } from '../hooks/useGetTeams'
-import { TPlayer } from '../types'
+import { Player } from '../types'
 
 const Picks = () => {
 	const { data: players } = useGetPlayers()
@@ -13,7 +13,7 @@ const Picks = () => {
 	const createPlayer = useCreatePlayer()
 	const updatePlayer = useUpdatePlayer()
 
-	const addPlayer = async (playerToAdd: TPlayer) => {
+	const addPlayer = async (playerToAdd: Player) => {
 		if (players?.find(player => player.id === playerToAdd.id)) {
 			alert("Player already exists")
 			return
@@ -22,7 +22,7 @@ const Picks = () => {
 		createPlayer.mutate(playerToAdd)
 	}
 
-	const editPlayer = (playerEdited: Partial<TPlayer>) => updatePlayer.mutate(playerEdited)
+	const editPlayer = (playerEdited: Partial<Player>) => updatePlayer.mutate(playerEdited)
 
 	if (teams) return (
 		<div className='row'>
