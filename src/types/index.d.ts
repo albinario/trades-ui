@@ -53,11 +53,14 @@ export type Game = {
 	}
 }
 
-export type GamesResult = {
-	dates: {
-		date: string
-		games: Game[]
-	}[]
+export type GamesResponse = {
+	dates: Date[]
+	totalGames: number
+}
+
+export type Date = {
+	date: string
+	games: Game[]
 }
 
 export type PlayersResponse = {

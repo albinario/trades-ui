@@ -1,33 +1,22 @@
 import classNames from 'classnames'
 import { getLogo } from '../helpers/getLogo'
 import moment from 'moment'
-import { useCallback, useEffect, useState } from 'react'
 import Image from 'react-bootstrap/Image'
-import { getGames } from '../services/NhlAPI'
-import { GamesResult } from '../types'
+import type { Date } from '../types'
 
 interface IProps {
 	teamId: number
+	dates: Date[]
 	startDate: string
 	endDate: string
 }
 
 const Week: React.FC<IProps> = (props) => {
-	const [games, setGames] = useState<GamesResult|null>(null)
 	let prevDate = ''
-
-	const _setGames = useCallback(async () => {
-		const res = await getGames(props.teamId, props.startDate, props.endDate)
-		setGames(res)
-	}, [props])
-
-	useEffect(() => {
-		_setGames()
-	}, [_setGames])
 
 	return (
 		<>
-			{games && games.dates.map(date => {
+			{props.dates.map(date => {
 				const game = date.games[0]
 				let home = false
 				let opponent = game.teams.home.team.id
