@@ -1,4 +1,3 @@
-import 'bootstrap-icons/font/bootstrap-icons.css'
 import Logo from './Logo'
 import Missing from './Missing'
 import type { Player } from '../types'
@@ -21,13 +20,13 @@ const Picker: React.FC<IProps> = (props) => {
 				.sort((a, b) => order.indexOf(a.pos) - order.indexOf(b.pos))
 				.map(player => (
 					<div key={player.id} className='mb-1'>
-						<Logo teamId={player.team} />
-						{player.pos} {player.jersey} {player.name} {}
-						<i
-							className='bi bi-x-circle cursor-pointer'
-							onClick={() => props.onRemovePicker({ id: player.id })}
-							role='button'
-						/>
+						<a 
+							className='cursor-pointer'
+							onClick={() => props.onRemovePicker({ id: player.id })} role='button'
+						>
+							<Logo teamId={player.team} />
+						</a>
+						{player.pos} {player.jersey} {player.name}
 					</div>
 				))
 			}
