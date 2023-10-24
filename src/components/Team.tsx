@@ -2,7 +2,7 @@ import Logo from './Logo'
 import Week from './Week'
 import { useGetSchedule } from '../hooks/useGetSchedule'
 import moment from 'moment'
-import { Player, TeamRecord, TeamValue } from '../types'
+import type { Player, TeamRecord, TeamValue } from '../types'
 
 interface IProps {
 	players?: Player[]
