@@ -1,19 +1,20 @@
+import Logo from './Logo'
 import Week from './Week'
-import { getLogo } from '../helpers/getLogo'
 import { useGetGames } from '../hooks/useGetGames'
 import moment from 'moment'
-import Image from 'react-bootstrap/Image'
-import type { TeamRecords } from '../types'
+import type { Player, TeamRecord, TeamValue } from '../types'
 
 interface IProps {
-	team: TeamRecords
+	players?: Player[]
+	teamRecord: TeamRecord
+	teamValues: TeamValue[]
 }
 
 const Team: React.FC<IProps> = (props) => {
 	const dateFormat = "YYYY-MM-DD"
-	const { data: games, isError } = useGetGames(props.team.team.id, moment().format(dateFormat), moment().add(1, 'month').format(dateFormat))
+	const { data: games, isError } = useGetGames(props.teamRecord.team.id, moment().format(dateFormat), moment().add(1, 'month').format(dateFormat))
 
-	if (isError) alert("Error fetching dates")
+	if (isError) alert("Error fetching games")
 
 	const week1Start = moment().format(dateFormat)
 	const week1End = moment().add(6, 'days').format(dateFormat)
@@ -21,62 +22,85 @@ const Team: React.FC<IProps> = (props) => {
 	const week2End = moment().add(13, 'days').format(dateFormat)
 	const week3Start = moment().add(14, 'days').format(dateFormat)
 	const week3End = moment().add(20, 'days').format(dateFormat)
+	const week4Start = moment().add(21, 'days').format(dateFormat)
+	const week4End = moment().add(27, 'days').format(dateFormat)
 	
 	return games ? (
 		<tr>
 			<td>
-				{props.team.leagueRank}
+				{props.teamRecord.leagueRank}
 			</td>
 			<td>
-				{props.team.leagueL10Rank}
+				{props.teamRecord.leagueL10Rank}
 			</td>
 			<td>
-				{props.team.divisionRank}
+				{props.teamRecord.divisionRank}
+			</td>
+			<td className='text-center'>
+				<Logo teamId={props.teamRecord.team.id} />
 			</td>
 			<td>
-				<Image src={getLogo(props.team.team.id)} fluid />
+				{props.teamRecord.team.name}
 			</td>
 			<td>
-				{props.team.team.name}
+				{props.teamRecord.streak.streakCode}
 			</td>
 			<td>
-				{props.team.streak.streakCode}
+				{props.teamRecord.leagueRecord.wins}-{props.teamRecord.leagueRecord.losses}-{props.teamRecord.leagueRecord.ot}
 			</td>
 			<td>
-				{props.team.leagueRecord.wins}-{props.team.leagueRecord.losses}-{props.team.leagueRecord.ot}
+				{props.teamRecord.goalsScored}-{props.teamRecord.goalsAgainst}
 			</td>
 			<td>
-				{props.team.goalsScored}-{props.team.goalsAgainst}
-			</td>
-			<td>
-				{(props.team.pointsPercentage * 100).toFixed()}%
+				{(props.teamRecord.pointsPercentage * 100).toFixed()}%
 			</td>
 			<td>
 				<Week
-					teamId={props.team.team.id}
 					dates={games.dates.filter(date => date.date <= week1End)}
-					startDate={week1Start}
 					endDate={week1End}
+					startDate={week1Start}
+					teamId={props.teamRecord.team.id}
+					teamValues={props.teamValues}
 				/>
 			</td>
 			<td>
 				<Week
-					teamId={props.team.team.id}
 					dates={games.dates.filter(date => date.date >= week2Start && date.date <= week2End)}
-					startDate={week2Start}
 					endDate={week2End}
+					startDate={week2Start}
+					teamId={props.teamRecord.team.id}
+					teamValues={props.teamValues}
 				/>
 			</td>
 			<td>
 				<Week
-					teamId={props.team.team.id}
 					dates={games.dates.filter(date => date.date >= week3Start && date.date <= week3End)}
-					startDate={week3Start}
 					endDate={week3End}
+					startDate={week3Start}
+					teamId={props.teamRecord.team.id}
+					teamValues={props.teamValues}
+				/>
+			</td>
+			<td>
+				<Week
+					dates={games.dates.filter(date => date.date >= week4Start && date.date <= week4End)}
+					endDate={week4End}
+					startDate={week4Start}
+					teamId={props.teamRecord.team.id}
+					teamValues={props.teamValues}
 				/>
 			</td>
 			<td>
 				{games.totalGames}
+			</td>
+			<td className='text-end'>
+				{props.players?.filter(player => player.picker === 'A').sort((a,b) => a.jersey - b.jersey).map(player => player.jersey).join(', ')}
+			</td>
+			<td className='text-center'>
+				<Logo teamId={props.teamRecord.team.id} />
+			</td>
+			<td>
+				{props.players?.filter(player => player.picker !== 'A').sort((a,b) => a.jersey - b.jersey).map(player => `${player.picker}${player.jersey}`).join(', ')}
 			</td>
 		</tr>
 	) : <></>

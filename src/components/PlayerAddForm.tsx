@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { Player, Team } from '../types'
+import type { Player, Team } from '../types'
 
 const PlayerAdd = (props: { teams: Team[], onSubmit: (player: Player) => void }) => {
 	const [name, setName] = useState('')

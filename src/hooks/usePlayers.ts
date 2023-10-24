@@ -1,7 +1,7 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { createPlayer, updatePlayer } from '../services/PlayerAPI'
 import { getPlayers } from '../services/TradesAPI'
-import { Player } from '../types'
+import type { Player } from '../types'
 
 const queryKey = ['players']
 

@@ -1,7 +1,7 @@
 import 'bootstrap-icons/font/bootstrap-icons.css'
-import { Player } from '../types'
-import Missing from './Missing'
 import Logo from './Logo'
+import Missing from './Missing'
+import type { Player } from '../types'
 
 interface IProps {
 	picker: string

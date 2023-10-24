@@ -2,17 +2,22 @@ import classNames from 'classnames'
 import { getLogo } from '../helpers/getLogo'
 import moment from 'moment'
 import Image from 'react-bootstrap/Image'
-import type { Date } from '../types'
+import type { Date, TeamValue } from '../types'
 
 interface IProps {
-	teamId: number
 	dates: Date[]
-	startDate: string
 	endDate: string
+	startDate: string
+	teamId: number
+	teamValues: TeamValue[]
 }
 
 const Week: React.FC<IProps> = (props) => {
 	let prevDate = ''
+	let value = 0
+
+	console.log(props.teamId === 1 && props.teamValues);
+	
 
 	return (
 		<>
@@ -34,6 +39,9 @@ const Week: React.FC<IProps> = (props) => {
 				})
 				prevDate = date.date
 
+				const oppValue = props.teamValues.find(team => team.teamId === opponent)?.value
+				if (oppValue) value = value + oppValue
+
 				return (
 					<Image
 						className={cssClasses}
@@ -44,6 +52,7 @@ const Week: React.FC<IProps> = (props) => {
 					/>
 				)
 			})}
+			{} {value}
 		</>
 	)
 }
