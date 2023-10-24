@@ -15,11 +15,6 @@ export type Game = {
 	}
 }
 
-export type GamesResponse = {
-	dates: Date[]
-	totalGames: number
-}
-
 export type Player = {
 	id: number
 	name: string
@@ -31,6 +26,11 @@ export type Player = {
 
 export type PlayersResponse = {
 	data: Player[]
+}
+
+export type ScheduleResponse = {
+	dates: Date[]
+	totalGames: number
 }
 
 export type StandingsResult = {

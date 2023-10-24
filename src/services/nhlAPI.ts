@@ -1,5 +1,5 @@
 import axios from 'axios'
-import type { GamesResponse, StandingsResult, TeamsResponse } from '../types'
+import type { ScheduleResponse, StandingsResult, TeamsResponse } from '../types'
 
 const instance = axios.create({
 	baseURL: 'https://statsapi.web.nhl.com/api/v1',
@@ -15,8 +15,8 @@ export const get = async <T>(endpoint: string) => {
 	return response.data as T
 }
 
-export const getGames = (teamId: number, startDate: string, endDate: string) => {
-	return get<GamesResponse>(`schedule?teamId=${teamId}&startDate=${startDate}&endDate=${endDate}`)
+export const getSchedule = (teamId: number, startDate: string, endDate: string) => {
+	return get<ScheduleResponse>(`schedule?teamId=${teamId}&startDate=${startDate}&endDate=${endDate}`)
 	
 }
 

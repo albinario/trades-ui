@@ -1,8 +1,8 @@
 import Logo from './Logo'
 import Week from './Week'
-import { useGetGames } from '../hooks/useGetGames'
+import { useGetSchedule } from '../hooks/useGetSchedule'
 import moment from 'moment'
-import type { Player, TeamRecord, TeamValue } from '../types'
+import { Player, TeamRecord, TeamValue } from '../types'
 
 interface IProps {
 	players?: Player[]
@@ -12,7 +12,7 @@ interface IProps {
 
 const Team: React.FC<IProps> = (props) => {
 	const dateFormat = "YYYY-MM-DD"
-	const { data: games, isError } = useGetGames(props.teamRecord.team.id, moment().format(dateFormat), moment().add(1, 'month').format(dateFormat))
+	const { data: schedule, isError } = useGetSchedule(props.teamRecord.team.id, moment().format(dateFormat), moment().add(1, 'month').format(dateFormat))
 
 	if (isError) alert("Error fetching games")
 
@@ -25,7 +25,7 @@ const Team: React.FC<IProps> = (props) => {
 	const week4Start = moment().add(21, 'days').format(dateFormat)
 	const week4End = moment().add(27, 'days').format(dateFormat)
 	
-	return games ? (
+	return schedule ? (
 		<tr>
 			<td>
 				{props.teamRecord.leagueRank}
@@ -56,7 +56,7 @@ const Team: React.FC<IProps> = (props) => {
 			</td>
 			<td>
 				<Week
-					dates={games.dates.filter(date => date.date <= week1End)}
+					dates={schedule.dates.filter(date => date.date <= week1End)}
 					endDate={week1End}
 					startDate={week1Start}
 					teamId={props.teamRecord.team.id}
@@ -65,7 +65,7 @@ const Team: React.FC<IProps> = (props) => {
 			</td>
 			<td>
 				<Week
-					dates={games.dates.filter(date => date.date >= week2Start && date.date <= week2End)}
+					dates={schedule.dates.filter(date => date.date >= week2Start && date.date <= week2End)}
 					endDate={week2End}
 					startDate={week2Start}
 					teamId={props.teamRecord.team.id}
@@ -74,7 +74,7 @@ const Team: React.FC<IProps> = (props) => {
 			</td>
 			<td>
 				<Week
-					dates={games.dates.filter(date => date.date >= week3Start && date.date <= week3End)}
+					dates={schedule.dates.filter(date => date.date >= week3Start && date.date <= week3End)}
 					endDate={week3End}
 					startDate={week3Start}
 					teamId={props.teamRecord.team.id}
@@ -83,7 +83,7 @@ const Team: React.FC<IProps> = (props) => {
 			</td>
 			<td>
 				<Week
-					dates={games.dates.filter(date => date.date >= week4Start && date.date <= week4End)}
+					dates={schedule.dates.filter(date => date.date >= week4Start && date.date <= week4End)}
 					endDate={week4End}
 					startDate={week4Start}
 					teamId={props.teamRecord.team.id}
@@ -91,7 +91,7 @@ const Team: React.FC<IProps> = (props) => {
 				/>
 			</td>
 			<td>
-				{games.totalGames}
+				{schedule.totalGames}
 			</td>
 			<td className='text-end'>
 				{props.players?.filter(player => player.picker === 'A').sort((a,b) => a.jersey - b.jersey).map(player => player.jersey).join(', ')}
