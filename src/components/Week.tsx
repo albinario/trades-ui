@@ -16,9 +16,6 @@ const Week: React.FC<IProps> = (props) => {
 	let prevDate = ''
 	let value = 0
 
-	console.log(props.teamId === 1 && props.teamValues);
-	
-
 	return (
 		<>
 			{props.dates.map(date => {

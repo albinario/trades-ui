@@ -13,7 +13,7 @@ const PlayerEditForm= (props: { playersAll?: Player[], teams: Team[], onSubmit: 
 		e.preventDefault()
 
 		if (!playerToEditId) {
-			console.log("No player chosen")
+			alert("No player chosen")
 			return
 		}
 
