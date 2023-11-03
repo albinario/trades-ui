@@ -1,7 +1,11 @@
 import { useState } from 'react'
 import type { Player, Team } from '../types'
 
-const PlayerEditForm= (props: { playersAll?: Player[], teams: Team[], onSubmit: (player: Partial<Player>) => void }) => {
+const PlayerEditForm = (props: {
+	playersAll?: Player[]
+	teams: Team[]
+	onSubmit: (player: Partial<Player>) => void
+}) => {
 	const [search, setSearch] = useState('')
 	const [playerToEditId, setPlayerToEditId] = useState(0)
 	const [picker, setPicker] = useState('')
@@ -13,7 +17,7 @@ const PlayerEditForm= (props: { playersAll?: Player[], teams: Team[], onSubmit: 
 		e.preventDefault()
 
 		if (!playerToEditId) {
-			alert("No player chosen")
+			alert('No player chosen')
 			return
 		}
 
@@ -22,7 +26,7 @@ const PlayerEditForm= (props: { playersAll?: Player[], teams: Team[], onSubmit: 
 			picker,
 			team,
 			jersey,
-			pos
+			pos,
 		}
 
 		props.onSubmit(playerToEdit)
@@ -41,7 +45,7 @@ const PlayerEditForm= (props: { playersAll?: Player[], teams: Team[], onSubmit: 
 						type='text'
 						className='form-control'
 						placeholder='Search'
-						onChange={e => setSearch(e.target.value)}
+						onChange={(e) => setSearch(e.target.value)}
 						value={search}
 					/>
 				</div>
@@ -49,20 +53,19 @@ const PlayerEditForm= (props: { playersAll?: Player[], teams: Team[], onSubmit: 
 				<div className='col'>
 					<select
 						className='form-select'
-						onChange={e => setPlayerToEditId(parseInt(e.target.value))}
+						onChange={(e) => setPlayerToEditId(parseInt(e.target.value))}
 					>
 						<option value={0}>Player</option>
-						{props.playersAll && props.playersAll
-							.filter((player: Player) => player.name.toLowerCase()
-								.includes(search.toLocaleLowerCase())
-							)
-							.map((player: Player) => (
-								<option
-									key={player.id}
-									value={player.id}
-								>{player.name}</option>
-							))
-						}
+						{props.playersAll &&
+							props.playersAll
+								.filter((player: Player) =>
+									player.name.toLowerCase().includes(search.toLocaleLowerCase())
+								)
+								.map((player: Player) => (
+									<option key={player.id} value={player.id}>
+										{player.name}
+									</option>
+								))}
 					</select>
 				</div>
 
@@ -71,7 +74,7 @@ const PlayerEditForm= (props: { playersAll?: Player[], teams: Team[], onSubmit: 
 						type='text'
 						className='form-control'
 						placeholder='Picker'
-						onChange={e => setPicker(e.target.value)}
+						onChange={(e) => setPicker(e.target.value)}
 						value={picker}
 					/>
 				</div>
@@ -79,15 +82,16 @@ const PlayerEditForm= (props: { playersAll?: Player[], teams: Team[], onSubmit: 
 				<div className='col'>
 					<select
 						className='form-select'
-						onChange={e => setTeam(parseInt(e.target.value))}
+						onChange={(e) => setTeam(parseInt(e.target.value))}
 					>
 						<option value={0}>Team</option>
-						{props.teams.map((team, index) => (
-							<option
-								key={index}
-								value={team.id}
-							>{team.name}</option>
-						))}
+						{props.teams
+							.sort((a, b) => a.name.localeCompare(b.name))
+							.map((team, index) => (
+								<option key={index} value={team.id}>
+									{team.name}
+								</option>
+							))}
 					</select>
 				</div>
 
@@ -96,7 +100,7 @@ const PlayerEditForm= (props: { playersAll?: Player[], teams: Team[], onSubmit: 
 						type='number'
 						className='form-control'
 						placeholder='Jersey'
-						onChange={e => setJersey(parseInt(e.target.value))}
+						onChange={(e) => setJersey(parseInt(e.target.value))}
 						value={jersey ? jersey : ''}
 					/>
 				</div>
@@ -106,16 +110,15 @@ const PlayerEditForm= (props: { playersAll?: Player[], teams: Team[], onSubmit: 
 						type='text'
 						className='form-control'
 						placeholder='Pos'
-						onChange={e => setPos(e.target.value)}
+						onChange={(e) => setPos(e.target.value)}
 						value={pos}
 					/>
 				</div>
 
 				<div className='col'>
-					<button
-						type='submit'
-						className='btn btn-success form-control'
-					>+</button>
+					<button type='submit' className='btn btn-success form-control'>
+						+
+					</button>
 				</div>
 			</div>
 		</form>
