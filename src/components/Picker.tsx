@@ -15,26 +15,27 @@ const Picker: React.FC<IProps> = (props) => {
 		<div className='col mt-5'>
 			<h3>{props.picker}</h3>
 
-			{props.players && props.players
-				.sort((a, b) => a.jersey - b.jersey)
-				.sort((a, b) => order.indexOf(a.pos) - order.indexOf(b.pos))
-				.map(player => (
-					<div key={player.id} className='mb-1'>
-						<a 
-							className='cursor-pointer'
-							onClick={() => props.onRemovePicker({ id: player.id })} role='button'
-						>
-							<Logo teamId={player.team} />
-						</a>
-						{player.pos} {player.jersey} {player.name}
-					</div>
-				))
-			}
+			{props.players &&
+				props.players
+					.sort((a, b) => a.jersey - b.jersey)
+					.sort((a, b) => order.indexOf(a.pos) - order.indexOf(b.pos))
+					.map((player) => (
+						<div key={player.id} className='mb-1'>
+							<a
+								className='cursor-pointer'
+								onClick={() => props.onRemovePicker({ id: player.id })}
+								role='button'
+							>
+								<Logo teamId={player.team} />
+							</a>
+							<span className='small'>
+								{player.pos} {player.jersey}
+							</span>{' '}
+							{player.name}
+						</div>
+					))}
 			{props.players && props.players.length < 12 && (
-				<Missing
-					all={false}
-					players={props.players}
-				/>
+				<Missing all={false} players={props.players} />
 			)}
 		</div>
 	)
