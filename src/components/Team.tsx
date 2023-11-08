@@ -1,8 +1,10 @@
-import Logo from './Logo'
 import Week from './Week'
-import { useGetSchedule } from '../hooks/useGetSchedule'
+import { getLogoUrl } from '../helpers/getLogoUrl'
+import { useGetGames } from '../hooks/useGetGames'
 import moment from 'moment'
 import type { Player, TeamRecord, TeamValue } from '../types'
+import Alert from 'react-bootstrap/Alert'
+import Image from 'react-bootstrap/Image'
 
 interface IProps {
 	players?: Player[]
@@ -10,11 +12,11 @@ interface IProps {
 	teamValues: TeamValue[]
 }
 
-const Team: React.FC<IProps> = (props) => {
-	const dateFormat = "YYYY-MM-DD"
-	const { data: schedule, isError } = useGetSchedule(props.teamRecord.team.id, moment().format(dateFormat), moment().add(1, 'month').format(dateFormat))
+const Team: React.FC<IProps> = ({ players, teamRecord, teamValues }) => {
+	const dateFormat = 'YYYY-MM-DD'
+	const { data: games, isError } = useGetGames(teamRecord.teamAbbrev.default)
 
-	if (isError) alert("Error fetching games")
+	if (isError) return <Alert variant='warning'>Error fetching team</Alert>
 
 	const week1Start = moment().format(dateFormat)
 	const week1End = moment().add(6, 'days').format(dateFormat)
@@ -24,86 +26,115 @@ const Team: React.FC<IProps> = (props) => {
 	const week3End = moment().add(20, 'days').format(dateFormat)
 	const week4Start = moment().add(21, 'days').format(dateFormat)
 	const week4End = moment().add(27, 'days').format(dateFormat)
-	
-	return schedule ? (
+
+	return games ? (
 		<tr>
-			<td>
-				{props.teamRecord.leagueRank}
-			</td>
-			<td>
-				{props.teamRecord.leagueL10Rank}
-			</td>
-			<td>
-				{props.teamRecord.divisionRank}
-			</td>
+			<td>{teamRecord.leagueSequence}</td>
+			<td>{teamRecord.leagueL10Sequence}</td>
 			<td className='text-center'>
-				<Logo teamId={props.teamRecord.team.id} />
+				<Image src={getLogoUrl(teamRecord.teamAbbrev.default)} />
+			</td>
+			<td>{teamRecord.teamName.default}</td>
+			<td>
+				{teamRecord.l10Wins}-{teamRecord.l10Losses}-{teamRecord.l10OtLosses}
 			</td>
 			<td>
-				{props.teamRecord.team.name}
+				{teamRecord.l10GoalsAgainst}-{teamRecord.l10GoalsFor}
 			</td>
 			<td>
-				{props.teamRecord.streak.streakCode}
+				{teamRecord.streakCode}
+				{teamRecord.streakCount}
 			</td>
 			<td>
-				{props.teamRecord.leagueRecord.wins}-{props.teamRecord.leagueRecord.losses}-{props.teamRecord.leagueRecord.ot}
+				{teamRecord.wins}-{teamRecord.losses}-{teamRecord.otLosses}
 			</td>
 			<td>
-				{props.teamRecord.goalsScored}-{props.teamRecord.goalsAgainst}
+				{teamRecord.goalFor}-{teamRecord.goalAgainst}
 			</td>
 			<td>
-				{(props.teamRecord.pointsPercentage * 100).toFixed()}%
+				<span className='home'>
+					{teamRecord.homeWins}-{teamRecord.homeLosses}-
+					{teamRecord.homeOtLosses}
+				</span>
 			</td>
+			<td>
+				<span className='home'>
+					{teamRecord.homeGoalsFor}-{teamRecord.homeGoalsAgainst}
+				</span>
+			</td>
+			<td>
+				{teamRecord.roadWins}-{teamRecord.roadLosses}-{teamRecord.roadOtLosses}
+			</td>
+			<td>
+				{teamRecord.roadGoalsFor}-{teamRecord.roadGoalsAgainst}
+			</td>
+
+			<td>{(teamRecord.pointPctg * 100).toFixed()}%</td>
 			<td>
 				<Week
-					dates={schedule.dates.filter(date => date.date <= week1End)}
+					games={games.filter(
+						(game) => game.gameDate >= week1Start && game.gameDate <= week1End
+					)}
 					endDate={week1End}
 					startDate={week1Start}
-					teamId={props.teamRecord.team.id}
-					teamValues={props.teamValues}
+					teamAbbrev={teamRecord.teamAbbrev.default}
+					teamValues={teamValues}
 				/>
 			</td>
 			<td>
 				<Week
-					dates={schedule.dates.filter(date => date.date >= week2Start && date.date <= week2End)}
+					games={games.filter(
+						(game) => game.gameDate >= week2Start && game.gameDate <= week2End
+					)}
 					endDate={week2End}
 					startDate={week2Start}
-					teamId={props.teamRecord.team.id}
-					teamValues={props.teamValues}
+					teamAbbrev={teamRecord.teamAbbrev.default}
+					teamValues={teamValues}
 				/>
 			</td>
 			<td>
 				<Week
-					dates={schedule.dates.filter(date => date.date >= week3Start && date.date <= week3End)}
+					games={games.filter(
+						(game) => game.gameDate >= week3Start && game.gameDate <= week3End
+					)}
 					endDate={week3End}
 					startDate={week3Start}
-					teamId={props.teamRecord.team.id}
-					teamValues={props.teamValues}
+					teamAbbrev={teamRecord.teamAbbrev.default}
+					teamValues={teamValues}
 				/>
 			</td>
 			<td>
 				<Week
-					dates={schedule.dates.filter(date => date.date >= week4Start && date.date <= week4End)}
+					games={games.filter(
+						(game) => game.gameDate >= week4Start && game.gameDate <= week4End
+					)}
 					endDate={week4End}
 					startDate={week4Start}
-					teamId={props.teamRecord.team.id}
-					teamValues={props.teamValues}
+					teamAbbrev={teamRecord.teamAbbrev.default}
+					teamValues={teamValues}
 				/>
 			</td>
-			<td>
-				{schedule.totalGames}
-			</td>
 			<td className='text-end'>
-				{props.players?.filter(player => player.picker === 'A').sort((a,b) => a.jersey - b.jersey).map(player => player.jersey).join(', ')}
+				{players
+					?.filter((player) => player.picker === 'A')
+					.sort((a, b) => a.jersey - b.jersey)
+					.map((player) => player.jersey)
+					.join(', ')}
 			</td>
 			<td className='text-center'>
-				<Logo teamId={props.teamRecord.team.id} />
+				<Image src={getLogoUrl(teamRecord.teamAbbrev.default)} />
 			</td>
 			<td>
-				{props.players?.filter(player => player.picker !== 'A').sort((a,b) => a.jersey - b.jersey).map(player => `${player.picker}${player.jersey}`).join(', ')}
+				{players
+					?.filter((player) => player.picker !== 'A')
+					.sort((a, b) => a.jersey - b.jersey)
+					.map((player) => `${player.picker}${player.jersey}`)
+					.join(', ')}
 			</td>
 		</tr>
-	) : <></>
+	) : (
+		<></>
+	)
 }
 
 export default Team

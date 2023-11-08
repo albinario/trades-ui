@@ -1,6 +1,7 @@
-import Logo from './Logo'
 import Missing from './Missing'
 import type { Player } from '../types'
+import { Image } from 'react-bootstrap'
+import { getLogoUrl } from '../helpers/getLogoUrl'
 
 interface IProps {
 	picker: string
@@ -26,7 +27,7 @@ const Picker: React.FC<IProps> = (props) => {
 								onClick={() => props.onRemovePicker({ id: player.id })}
 								role='button'
 							>
-								<Logo teamId={player.team} />
+								<Image src={getLogoUrl(player.team)} />
 							</a>
 							<span className='small'>
 								{player.pos} {player.jersey}

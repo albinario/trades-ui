@@ -25,7 +25,7 @@ const PlayerAdd = (props: {
 			name,
 			jersey,
 			pos,
-			team,
+			teamAbbr: team,
 			picker,
 		}
 

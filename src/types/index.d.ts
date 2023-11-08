@@ -1,18 +1,13 @@
-export type Date = {
-	date: string
-	games: Game[]
-}
-
 export type Game = {
-	gamePk: number
-	teams: {
-		away: {
-			team: Team
-		}
-		home: {
-			team: Team
-		}
-	}
+	id: number
+	gameType: number
+	gameDate: string
+	startTimeUTC: string
+	easternUTCOffset: string
+	venueUTCOffset: string
+	gameState: string
+	awayTeam: Team
+	homeTeam: Team
 }
 
 export type Player = {
@@ -20,7 +15,7 @@ export type Player = {
 	name: string
 	jersey: number
 	pos: string
-	team: number
+	team: string
 	picker: string
 }
 
@@ -28,46 +23,61 @@ export type PlayersResponse = {
 	data: Player[]
 }
 
-export type ScheduleResponse = {
-	dates: Date[]
-	totalGames: number
-}
-
-export type StandingsResult = {
-	records: {
-		teamRecords: TeamRecord[]
-	}[]
-}
-
 export type Team = {
 	id: number
-	name: string
+	placeName: {
+		default: string
+	}
+	abbrev: string
+	logo: string
+	darkLogo: string
+}
+
+export type TeamValue = {
+	teamAbbrev: string
+	value: number
 }
 
 export type TeamRecord = {
-	divisionRank: string
 	gamesPlayed: number
-	goalsAgainst: number
-	goalsScored: number
-	leagueL10Rank: string
-	leagueRank: string
-	leagueRecord: {
-		wins: number
-		losses: number
-		ot: number
+	goalAgainst: number
+	goalFor: number
+	homeGoalsAgainst: number
+	homeGoalsFor: number
+	homeLosses: number
+	homeOtLosses: number
+	homeWins: number
+	l10GoalsAgainst: number
+	l10GoalsFor: number
+	l10Losses: number
+	l10OtLosses: number
+	l10Wins: number
+	leagueL10Sequence: number
+	leagueSequence: number
+	losses: number
+	otLosses: number
+	placeName: {
+		default: string
 	}
-	pointsPercentage: number
-	streak: {
-		streakCode: string
+	pointPctg: number
+	roadGoalsAgainst: number
+	roadGoalsFor: number
+	roadLosses: number
+	roadOtLosses: number
+	roadWins: number
+	streakCode: string
+	streakCount: number
+	teamAbbrev: {
+		default: string
 	}
-	team: Team
+	teamLogo: string
+	teamName: {
+		default: string
+		fr: string
+	}
+	wins: number
 }
 
 export type TeamsResponse = {
 	teams: Team[]
-}
-
-export type TeamValue = {
-	teamId: number
-	value: number
 }

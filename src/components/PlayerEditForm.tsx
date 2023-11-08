@@ -24,7 +24,7 @@ const PlayerEditForm = (props: {
 		const playerToEdit: Partial<Player> = {
 			id: playerToEditId,
 			picker,
-			team,
+			teamAbbr: team,
 			jersey,
 			pos,
 		}

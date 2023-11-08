@@ -1,14 +1,14 @@
 import classNames from 'classnames'
-import { getLogo } from '../helpers/getLogo'
+import { getLogoUrl } from '../helpers/getLogoUrl'
 import moment from 'moment'
 import Image from 'react-bootstrap/Image'
-import type { Date, TeamValue } from '../types'
+import type { Game, TeamValue } from '../types'
 
 interface IProps {
-	dates: Date[]
+	games: Game[]
 	endDate: string
 	startDate: string
-	teamId: number
+	teamAbbrev: string
 	teamValues: TeamValue[]
 }
 
@@ -18,38 +18,40 @@ const Week: React.FC<IProps> = (props) => {
 
 	return (
 		<>
-			{props.dates.map(date => {
-				const game = date.games[0]
+			{props.games.map((game) => {
 				let home = false
-				let opponent = game.teams.home.team.id
+				let opponent = game.homeTeam.abbrev
 
-				if (props.teamId === game.teams.home.team.id) {
+				if (props.teamAbbrev === game.homeTeam.abbrev) {
 					home = true
-					opponent = game.teams.away.team.id
+					opponent = game.awayTeam.abbrev
 				}
 
 				const cssClasses = classNames({
-					'back-back': moment(date.date).subtract(1, 'days').format('YYYY-MM-DD') === prevDate,
-					'home': home,
-					'first': date.date === props.startDate,
-					'last': date.date === props.endDate
+					back:
+						moment(game.gameDate).subtract(1, 'days').format('YYYY-MM-DD') ===
+						prevDate,
+					home,
+					first: game.gameDate === props.startDate,
+					last: game.gameDate === props.endDate,
 				})
-				prevDate = date.date
+				prevDate = game.gameDate
 
-				const oppValue = props.teamValues.find(team => team.teamId === opponent)?.value
-				if (oppValue) value = value + oppValue
+				const oppValue = props.teamValues.find(
+					(team) => team.teamAbbrev === opponent
+				)?.value
+				if (oppValue) value += oppValue
 
 				return (
 					<Image
+						key={game.id}
 						className={cssClasses}
-						fluid
-						key={game.gamePk}
-						src={getLogo(opponent)}
-						title={`${date.date}`}
+						src={getLogoUrl(opponent)}
+						title={game.gameDate}
 					/>
 				)
 			})}
-			{} {value}
+			<span className='ms-1'>{value}</span>
 		</>
 	)
 }

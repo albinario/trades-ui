@@ -2,33 +2,49 @@ import express from 'express'
 import axios from 'axios'
 
 const app = express()
-const port = 3000 // Choose a port for your proxy server
+const port = 3000
 
-// Middleware to handle CORS headers for your proxy server
-app.use((req, res, next) => {
+app.use((_req, res, next) => {
 	res.header('Access-Control-Allow-Origin', '*')
 	next()
 })
 
-// Route to proxy the request to the remote server
-app.get('/nhle-standings', async (req, res) => {
-	try {
-		// Make a request to the remote server
-		const response = await axios.get(
-			'https://api-web.nhle.com/v1/standings/2023-11-07'
-		)
+const instance = axios.create({
+	baseURL: 'https://api-web.nhle.com/v1',
+	timeout: 10000,
+	headers: {
+		'Content-Type': 'application/json',
+		Accept: 'application/json',
+	},
+})
 
-		// Send the remote server's response to the client
-		res.json(response.data)
+app.get('/games/:teamAbbrev', async (req, res) => {
+	const teamAbbrev = req.params.teamAbbrev
+
+	try {
+		const response = await instance.get(
+			'/club-schedule-season/' + teamAbbrev + '/now'
+		)
+		res.json(response.data.games)
 	} catch (error) {
-		// Handle any errors
-		res
-			.status(500)
-			.json({ error: 'Failed to retrieve data from the remote server.' })
+		res.status(500).json({
+			error: 'Server error when fetching schedule',
+		})
+	}
+})
+
+app.get('/standings', async (req, res) => {
+	try {
+		const response = await instance.get('/standings/now')
+		res.json(response.data.standings)
+	} catch (error) {
+		res.status(500).json({
+			error: 'Server error when fetching standings',
+		})
 	}
 })
 
 // Start the proxy server
 app.listen(port, () => {
-	console.log(`Proxy server is running on port ${port}`)
+	console.log('Proxy server is running on port ' + port)
 })
