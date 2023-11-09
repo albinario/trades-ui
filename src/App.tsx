@@ -8,15 +8,13 @@ import Container from 'react-bootstrap/Container'
 import { Route, Routes } from 'react-router-dom'
 
 const App = () => {
-	const { data: players, isError: playersError } = useGetPlayers()
-	const { data: teamRecords, isError: teamRecordsError } = useGetTeamRecords()
+	const { data: players } = useGetPlayers()
+	const { data: teamRecords } = useGetTeamRecords()
 
-	if (playersError || teamRecordsError) return alert("Something went wrong")
-
-	const teams = teamRecords?.map(teamRecord => ({
+	const teams = teamRecords?.map((teamRecord) => ({
 		abbrev: teamRecord.teamAbbrev.default,
 		name: teamRecord.teamName.default,
-		value: Number(teamRecord.leagueL10Sequence)
+		value: Number(teamRecord.leagueL10Sequence),
 	}))
 
 	return (
@@ -26,18 +24,13 @@ const App = () => {
 			<Routes>
 				<Route
 					path='/trades-ui'
-					element={
-						<Picks
-							players={players}
-							teams={teams}
-						/>
-					}
+					element={<Picks players={players} teams={teams} />}
 				/>
 				<Route
 					path='/schedule'
 					element={
 						<Schedule
-							players={players?.filter(player => player.picker)}
+							players={players?.filter((player) => player.picker)}
 							teamRecords={teamRecords}
 							teams={teams}
 						/>
