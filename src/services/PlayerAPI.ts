@@ -1,11 +1,9 @@
 import axios from 'axios'
 import type { Player, PlayersResponse } from '../types'
 
-const BASE_URL = 'http://localhost:3001/players'
-
 const instance = axios.create({
-	baseURL: BASE_URL,
-	timeout: 10000
+	baseURL: 'https://trades.cyclic.app/players',
+	timeout: 10000,
 })
 
 const get = async <T>(endpoint: string) => {
@@ -15,13 +13,13 @@ const get = async <T>(endpoint: string) => {
 
 export const getPlayers = async () => {
 	const playersResponse = await get<PlayersResponse>('')
-	return playersResponse.data.filter(player => player.picker)
+	return playersResponse.data.filter((player) => player.picker)
 }
 
 export const createPlayer = (player: Player) => {
-	return axios.post(BASE_URL, player)
+	return instance.post('/', player)
 }
 
 export const updatePlayer = (player: Partial<Player>) => {
-	return axios.patch(BASE_URL + '/' + player.id, player)
+	return instance.patch('/' + player.id, player)
 }
