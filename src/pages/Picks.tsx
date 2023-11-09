@@ -2,25 +2,21 @@ import Missing from '../components/Missing'
 import Picker from '../components/Picker'
 import PlayerAddForm from '../components/PlayerAddForm'
 import PlayerEditForm from '../components/PlayerEditForm'
-import { useGetTeams } from '../hooks/useGetTeams'
 import { useCreatePlayer, useUpdatePlayer } from '../hooks/usePlayers'
-import type { Player } from '../types'
+import Row from 'react-bootstrap/Row'
+import type { Player, Team } from '../types'
 
 interface IProps {
 	players?: Player[]
+	teams?: Team[]
 }
 
-const Picks: React.FC<IProps> = (props) => {
-	const { data: teams } = useGetTeams()
-
+const Picks: React.FC<IProps> = ({players, teams}) => {	
 	const createPlayer = useCreatePlayer()
 	const updatePlayer = useUpdatePlayer()
 
 	const addPlayer = async (playerToAdd: Player) => {
-		if (props.players?.find(player => player.id === playerToAdd.id)) {
-			alert("Player already exists")
-			return
-		}
+		if (players?.find(player => player.id === playerToAdd.id)) return alert("Player already exists")
 
 		createPlayer.mutate(playerToAdd)
 	}
@@ -28,7 +24,7 @@ const Picks: React.FC<IProps> = (props) => {
 	const editPlayer = (playerEdited: Partial<Player>) => updatePlayer.mutate(playerEdited)
 
 	return teams ? (
-		<div className='row'>
+		<>
 			<h4>Add</h4>
 			<PlayerAddForm
 				teams={teams}
@@ -37,39 +33,41 @@ const Picks: React.FC<IProps> = (props) => {
 
 			<h4 className='mt-4'>Edit</h4>
 			<PlayerEditForm
-				playersAll={props.players}
+				playersAll={players}
 				teams={teams}
 				onSubmit={editPlayer}
 			/>
 
-			<Picker
-				picker='Albin'
-				players={props.players?.filter(player => player.picker === 'A')}
-				onRemovePicker={editPlayer}
-			/>
-			<Picker
-				picker='Jakob'
-				players={props.players?.filter(player => player.picker === 'J')}
-				onRemovePicker={editPlayer}
-			/>
-			<Picker
-				picker='Sacke'
-				players={props.players?.filter(player => player.picker === 'S')}
-				onRemovePicker={editPlayer}
-			/>
-			<Picker
-				picker='Ville'
-				players={props.players?.filter(player => player.picker === 'V')}
-				onRemovePicker={editPlayer}
-			/>
-
-			{props.players && props.players.length < 48 && (
-				<Missing
-					all={true}
-					players={props.players}
+			<Row className='mt-5'>
+				<Picker
+					picker='Albin'
+					players={players?.filter(player => player.picker === 'A')}
+					onRemovePicker={editPlayer}
 				/>
-			)}
-		</div>
+				<Picker
+					picker='Jakob'
+					players={players?.filter(player => player.picker === 'J')}
+					onRemovePicker={editPlayer}
+				/>
+				<Picker
+					picker='Sacke'
+					players={players?.filter(player => player.picker === 'S')}
+					onRemovePicker={editPlayer}
+				/>
+				<Picker
+					picker='Ville'
+					players={players?.filter(player => player.picker === 'V')}
+					onRemovePicker={editPlayer}
+				/>
+
+				{players && players.length < 48 && (
+					<Missing
+						all={true}
+						players={players}
+					/>
+				)}
+			</Row>
+		</>
 	) : <></>
 }
 

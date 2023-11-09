@@ -15,7 +15,7 @@ export type Player = {
 	name: string
 	jersey: number
 	pos: string
-	team: string
+	teamAbbrev: string
 	picker: string
 }
 
@@ -24,17 +24,8 @@ export type PlayersResponse = {
 }
 
 export type Team = {
-	id: number
-	placeName: {
-		default: string
-	}
 	abbrev: string
-	logo: string
-	darkLogo: string
-}
-
-export type TeamValue = {
-	teamAbbrev: string
+	name: string
 	value: number
 }
 
@@ -76,8 +67,4 @@ export type TeamRecord = {
 		fr: string
 	}
 	wins: number
-}
-
-export type TeamsResponse = {
-	teams: Team[]
 }

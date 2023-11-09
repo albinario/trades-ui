@@ -2,7 +2,7 @@ import axios from 'axios'
 import type { Game, TeamRecord } from '../types'
 
 const instance = axios.create({
-	baseURL: 'http://localhost:3000',
+	baseURL: 'https://api-web.nhle.com/v1',
 	timeout: 10000,
 	headers: {
 		'Content-Type': 'application/json',
@@ -11,11 +11,11 @@ const instance = axios.create({
 })
 
 export const get = async <T>(endpoint: string) => {
-	const response = await instance.get<T>(endpoint)
-	return response.data
+	const response = await instance.get(endpoint)
+	return response.data as T
 }
 
 export const getGames = (teamAbbrev: string) =>
-	get<Game[]>('/games/' + teamAbbrev)
+	get<Game[]>('/club-schedule-season/' + teamAbbrev + '/now')
 
-export const getTeamRecords = () => get<TeamRecord[]>('/standings')
+export const getTeamRecords = () => get<TeamRecord[]>('/standings/now')

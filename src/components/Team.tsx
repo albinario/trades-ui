@@ -2,17 +2,17 @@ import Week from './Week'
 import { getLogoUrl } from '../helpers/getLogoUrl'
 import { useGetGames } from '../hooks/useGetGames'
 import moment from 'moment'
-import type { Player, TeamRecord, TeamValue } from '../types'
 import Alert from 'react-bootstrap/Alert'
 import Image from 'react-bootstrap/Image'
+import type { Player, Team, TeamRecord } from '../types'
 
 interface IProps {
 	players?: Player[]
 	teamRecord: TeamRecord
-	teamValues: TeamValue[]
+	teams?: Team[]
 }
 
-const Team: React.FC<IProps> = ({ players, teamRecord, teamValues }) => {
+const Team: React.FC<IProps> = ({ players, teamRecord, teams }) => {
 	const dateFormat = 'YYYY-MM-DD'
 	const { data: games, isError } = useGetGames(teamRecord.teamAbbrev.default)
 
@@ -78,7 +78,7 @@ const Team: React.FC<IProps> = ({ players, teamRecord, teamValues }) => {
 					endDate={week1End}
 					startDate={week1Start}
 					teamAbbrev={teamRecord.teamAbbrev.default}
-					teamValues={teamValues}
+					teams={teams}
 				/>
 			</td>
 			<td>
@@ -89,7 +89,7 @@ const Team: React.FC<IProps> = ({ players, teamRecord, teamValues }) => {
 					endDate={week2End}
 					startDate={week2Start}
 					teamAbbrev={teamRecord.teamAbbrev.default}
-					teamValues={teamValues}
+					teams={teams}
 				/>
 			</td>
 			<td>
@@ -100,7 +100,7 @@ const Team: React.FC<IProps> = ({ players, teamRecord, teamValues }) => {
 					endDate={week3End}
 					startDate={week3Start}
 					teamAbbrev={teamRecord.teamAbbrev.default}
-					teamValues={teamValues}
+					teams={teams}
 				/>
 			</td>
 			<td>
@@ -111,7 +111,7 @@ const Team: React.FC<IProps> = ({ players, teamRecord, teamValues }) => {
 					endDate={week4End}
 					startDate={week4Start}
 					teamAbbrev={teamRecord.teamAbbrev.default}
-					teamValues={teamValues}
+					teams={teams}
 				/>
 			</td>
 			<td className='text-end'>

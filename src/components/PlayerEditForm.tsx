@@ -1,4 +1,8 @@
 import { useState } from 'react'
+import Button from 'react-bootstrap/Button'
+import Col from 'react-bootstrap/Col'
+import Row from 'react-bootstrap/Row'
+import Form from 'react-bootstrap/Form'
 import type { Player, Team } from '../types'
 
 const PlayerEditForm = (props: {
@@ -6,25 +10,22 @@ const PlayerEditForm = (props: {
 	teams: Team[]
 	onSubmit: (player: Partial<Player>) => void
 }) => {
-	const [search, setSearch] = useState('')
-	const [playerToEditId, setPlayerToEditId] = useState(0)
-	const [picker, setPicker] = useState('')
-	const [team, setTeam] = useState(0)
 	const [jersey, setJersey] = useState(0)
+	const [picker, setPicker] = useState('')
+	const [playerToEditId, setPlayerToEditId] = useState(0)
 	const [pos, setPos] = useState('')
+	const [search, setSearch] = useState('')
+	const [teamAbbrev, setTeamAbbrev] = useState('')
 
 	const playerEdit = (e: React.FormEvent) => {
 		e.preventDefault()
 
-		if (!playerToEditId) {
-			alert('No player chosen')
-			return
-		}
+		if (!playerToEditId) return alert('No player chosen')
 
 		const playerToEdit: Partial<Player> = {
 			id: playerToEditId,
 			picker,
-			teamAbbr: team,
+			teamAbbrev,
 			jersey,
 			pos,
 		}
@@ -38,21 +39,19 @@ const PlayerEditForm = (props: {
 	}
 
 	return (
-		<form onSubmit={playerEdit}>
-			<div className='row g-1'>
-				<div className='col'>
-					<input
-						type='text'
-						className='form-control'
-						placeholder='Search'
+		<Form onSubmit={playerEdit}>
+			<Row className='g-1'>
+				<Col>
+					<Form.Control
 						onChange={(e) => setSearch(e.target.value)}
+						placeholder='Search'
+						type='text'
 						value={search}
 					/>
-				</div>
+				</Col>
 
-				<div className='col'>
-					<select
-						className='form-select'
+				<Col>
+					<Form.Select
 						onChange={(e) => setPlayerToEditId(parseInt(e.target.value))}
 					>
 						<option value={0}>Player</option>
@@ -66,62 +65,58 @@ const PlayerEditForm = (props: {
 										{player.name}
 									</option>
 								))}
-					</select>
-				</div>
+					</Form.Select>
+				</Col>
 
-				<div className='col'>
-					<input
-						type='text'
-						className='form-control'
-						placeholder='Picker'
-						onChange={(e) => setPicker(e.target.value)}
-						value={picker}
-					/>
-				</div>
-
-				<div className='col'>
-					<select
-						className='form-select'
-						onChange={(e) => setTeam(parseInt(e.target.value))}
+				<Col>
+					<Form.Select
+						onChange={(e) => setTeamAbbrev(e.target.value)}
 					>
 						<option value={0}>Team</option>
 						{props.teams
 							.sort((a, b) => a.name.localeCompare(b.name))
 							.map((team, index) => (
-								<option key={index} value={team.id}>
+								<option key={index} value={team.abbrev}>
 									{team.name}
 								</option>
 							))}
-					</select>
-				</div>
+					</Form.Select>
+				</Col>
 
-				<div className='col'>
-					<input
-						type='number'
-						className='form-control'
-						placeholder='Jersey'
+				<Col>
+					<Form.Control
+						onChange={(e) => setPicker(e.target.value)}
+						placeholder='Picker'
+						type='text'
+						value={picker}
+					/>
+				</Col>
+
+				<Col>
+					<Form.Control
 						onChange={(e) => setJersey(parseInt(e.target.value))}
+						placeholder='Jersey'
+						type='number'
 						value={jersey ? jersey : ''}
 					/>
-				</div>
+				</Col>
 
-				<div className='col'>
-					<input
-						type='text'
-						className='form-control'
-						placeholder='Pos'
+				<Col>
+					<Form.Control
 						onChange={(e) => setPos(e.target.value)}
+						placeholder='Pos'
+						type='text'
 						value={pos}
 					/>
-				</div>
+				</Col>
 
-				<div className='col'>
-					<button type='submit' className='btn btn-success form-control'>
+				<Col>
+					<Button type='submit' className='form-control' variant='outline-success'>
 						+
-					</button>
-				</div>
-			</div>
-		</form>
+					</Button>
+				</Col>
+			</Row>
+		</Form>
 	)
 }
 

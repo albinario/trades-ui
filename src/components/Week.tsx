@@ -2,14 +2,14 @@ import classNames from 'classnames'
 import { getLogoUrl } from '../helpers/getLogoUrl'
 import moment from 'moment'
 import Image from 'react-bootstrap/Image'
-import type { Game, TeamValue } from '../types'
+import type { Game, Team } from '../types'
 
 interface IProps {
 	games: Game[]
 	endDate: string
 	startDate: string
 	teamAbbrev: string
-	teamValues: TeamValue[]
+	teams?: Team[]
 }
 
 const Week: React.FC<IProps> = (props) => {
@@ -37,8 +37,8 @@ const Week: React.FC<IProps> = (props) => {
 				})
 				prevDate = game.gameDate
 
-				const oppValue = props.teamValues.find(
-					(team) => team.teamAbbrev === opponent
+				const oppValue = props.teams?.find(
+					(team) => team.abbrev === opponent
 				)?.value
 				if (oppValue) value += oppValue
 

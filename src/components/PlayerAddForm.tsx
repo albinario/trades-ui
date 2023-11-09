@@ -1,121 +1,115 @@
 import { useState } from 'react'
+import Button from 'react-bootstrap/Button'
+import Col from 'react-bootstrap/Col'
+import Row from 'react-bootstrap/Row'
+import Form from 'react-bootstrap/Form'
 import type { Player, Team } from '../types'
 
 const PlayerAdd = (props: {
 	teams: Team[]
 	onSubmit: (player: Player) => void
 }) => {
-	const [name, setName] = useState('')
-	const [team, setTeam] = useState(0)
-	const [pos, setPos] = useState('')
-	const [jersey, setJersey] = useState(0)
-	const [picker, setPicker] = useState('')
 	const [id, setId] = useState(0)
+	const [jersey, setJersey] = useState(0)
+	const [name, setName] = useState('')
+	const [picker, setPicker] = useState('')
+	const [pos, setPos] = useState('')
+	const [teamAbbrev, setTeamAbbrev] = useState('')
 
 	const playerAdd = (e: React.FormEvent) => {
 		e.preventDefault()
 
-		if (!team || !pos || !jersey || !picker || !id) {
-			alert('Missing values')
-			return
-		}
+		if (!teamAbbrev || !pos || !jersey || !picker || !id) return alert('Missing values')
 
 		const playerNew: Player = {
 			id,
 			name,
 			jersey,
 			pos,
-			teamAbbr: team,
+			teamAbbrev,
 			picker,
 		}
 
 		props.onSubmit(playerNew)
 
+		setId(0)
+		setJersey(0)
 		setName('')
 		setPicker('')
-		setJersey(0)
 		setPos('')
-		setId(0)
 	}
 
 	return (
-		<form onSubmit={playerAdd}>
-			<div className='row g-1'>
-				<div className='col'>
-					<input
-						type='text'
-						className='form-control'
-						placeholder='Name'
+		<Form onSubmit={playerAdd}>
+			<Row className='g-1'>
+				<Col>
+					<Form.Control
 						onChange={(e) => setName(e.target.value)}
-						value={name}
+						placeholder='Name'
 						required
+						type='text'
+						value={name}
 					/>
-				</div>
+				</Col>
 
-				<div className='col'>
-					<select
-						className='form-select'
-						onChange={(e) => setTeam(parseInt(e.target.value))}
-						defaultValue={'0'}
+				<Col>
+					<Form.Control
+						onChange={(e) => setId(Number(e.target.value))}
+						placeholder='id'
+						type='number'
+						value={id ? id : ''}
+					/>
+				</Col>
+
+				<Col>
+					<Form.Select
+						onChange={(e) => setTeamAbbrev(e.target.value)}
 					>
-						<option value={'0'}>Team</option>
+						<option value={''}>Team</option>
 						{props.teams
 							.sort((a, b) => a.name.localeCompare(b.name))
 							.map((team, index) => (
-								<option key={index} value={team.id}>
+								<option key={index} value={team.abbrev}>
 									{team.name}
 								</option>
 							))}
-					</select>
-				</div>
+					</Form.Select>
+				</Col>
 
-				<div className='col'>
-					<input
-						type='text'
-						className='form-control'
-						placeholder='Picker'
+				<Col>
+					<Form.Control
 						onChange={(e) => setPicker(e.target.value)}
+						placeholder='Picker'
+						type='text'
 						value={picker}
 					/>
-				</div>
+				</Col>
 
-				<div className='col'>
-					<input
-						type='number'
-						className='form-control'
+				<Col>
+					<Form.Control
+						onChange={(e) => setJersey(Number(e.target.value))}
 						placeholder='Jersey'
-						onChange={(e) => setJersey(parseInt(e.target.value))}
+						type='number'
 						value={jersey ? jersey : ''}
 					/>
-				</div>
+				</Col>
 
-				<div className='col'>
-					<input
-						type='text'
-						className='form-control'
-						placeholder='Pos'
+				<Col>
+					<Form.Control
 						onChange={(e) => setPos(e.target.value)}
+						placeholder='Pos'
+						type='text'
 						value={pos}
 					/>
-				</div>
+				</Col>
 
-				<div className='col'>
-					<input
-						type='number'
-						className='form-control'
-						placeholder='id'
-						onChange={(e) => setId(parseInt(e.target.value))}
-						value={id ? id : ''}
-					/>
-				</div>
-
-				<div className='col'>
-					<button type='submit' className='btn btn-success form-control'>
+				<Col>
+					<Button type='submit' className='form-control' variant='outline-success'>
 						+
-					</button>
-				</div>
-			</div>
-		</form>
+					</Button>
+				</Col>
+			</Row>
+		</Form>
 	)
 }
 
