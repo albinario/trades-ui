@@ -19,7 +19,8 @@ const PlayerAdd = (props: {
 	const playerAdd = (e: React.FormEvent) => {
 		e.preventDefault()
 
-		if (!teamAbbrev || !pos || !jersey || !picker || !id) return alert('Missing values')
+		if (!teamAbbrev || !pos || !jersey || !picker || !id)
+			return alert('Missing values')
 
 		const playerNew: Player = {
 			id,
@@ -62,9 +63,7 @@ const PlayerAdd = (props: {
 				</Col>
 
 				<Col>
-					<Form.Select
-						onChange={(e) => setTeamAbbrev(e.target.value)}
-					>
+					<Form.Select onChange={(e) => setTeamAbbrev(e.target.value)}>
 						<option value={''}>Team</option>
 						{props.teams
 							.sort((a, b) => a.name.localeCompare(b.name))
@@ -104,7 +103,11 @@ const PlayerAdd = (props: {
 				</Col>
 
 				<Col>
-					<Button type='submit' className='form-control' variant='outline-success'>
+					<Button
+						type='submit'
+						className='form-control'
+						variant='outline-success'
+					>
 						+
 					</Button>
 				</Col>

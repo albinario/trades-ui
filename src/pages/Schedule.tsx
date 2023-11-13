@@ -8,7 +8,7 @@ interface IProps {
 	teams?: TTeam[]
 }
 
-const Schedule: React.FC<IProps> = ({players, teamRecords, teams}) => (
+const Schedule: React.FC<IProps> = ({ players, teamRecords, teams }) => (
 	<Table size='sm' striped>
 		<tbody>
 			{teamRecords?.map((teamRecord, index) => (

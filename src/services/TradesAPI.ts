@@ -18,11 +18,6 @@ export const getPlayers = async () => {
 	return res.data
 }
 
-// export const getPlayersPicked = async () => {
-// 	const playersResponse = await get<PlayersResponse>('')
-// 	return playersResponse.data.filter((player) => player.picker)
-// }
-
 export const createPlayer = (player: Player) => {
 	return instance.post('/', player)
 }

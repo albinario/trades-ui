@@ -69,9 +69,7 @@ const PlayerEditForm = (props: {
 				</Col>
 
 				<Col>
-					<Form.Select
-						onChange={(e) => setTeamAbbrev(e.target.value)}
-					>
+					<Form.Select onChange={(e) => setTeamAbbrev(e.target.value)}>
 						<option value={0}>Team</option>
 						{props.teams
 							.sort((a, b) => a.name.localeCompare(b.name))
@@ -111,7 +109,11 @@ const PlayerEditForm = (props: {
 				</Col>
 
 				<Col>
-					<Button type='submit' className='form-control' variant='outline-success'>
+					<Button
+						type='submit'
+						className='form-control'
+						variant='outline-success'
+					>
 						+
 					</Button>
 				</Col>

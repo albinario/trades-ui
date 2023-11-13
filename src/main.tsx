@@ -11,8 +11,8 @@ const queryClient = new QueryClient({
 			refetchOnWindowFocus: false,
 			staleTime: 1000 * 60 * 15,
 			gcTime: 1000 * 60 * 60,
-		}
-	}
+		},
+	},
 })
 
 ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
