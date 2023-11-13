@@ -4,12 +4,11 @@ import type { Player } from '../types'
 
 const queryKey = ['players']
 
-export const useGetPlayers = () => {
-	return useQuery({
+export const useGetPlayers = () =>
+	useQuery({
 		queryKey,
 		queryFn: getPlayers,
 	})
-}
 
 export const useUpdatePlayer = () => {
 	const queryClient = useQueryClient()
