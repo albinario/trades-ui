@@ -70,7 +70,7 @@ const PlayerEditForm = (props: {
 
 				<Col>
 					<Form.Select onChange={(e) => setTeamAbbrev(e.target.value)}>
-						<option value={0}>Team</option>
+						<option value={''}>Team</option>
 						{props.teams
 							.sort((a, b) => a.name.localeCompare(b.name))
 							.map((team, index) => (
