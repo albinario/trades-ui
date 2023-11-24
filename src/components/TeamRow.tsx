@@ -1,38 +1,32 @@
+import Logo from './Logo'
 import Week from './Week'
-import { getLogoUrl } from '../helpers/getLogoUrl'
 import { useGetGames } from '../hooks/useGetGames'
-import moment from 'moment'
 import Alert from 'react-bootstrap/Alert'
-import Image from 'react-bootstrap/Image'
-import type { Player, Team, TeamRecord } from '../types'
+import type { Dates, Player, Team, TeamRecord } from '../types'
 
 interface IProps {
-	players?: Player[]
+	dates: Dates
+	playersPicked?: Player[]
 	teamRecord: TeamRecord
 	teams?: Team[]
 }
 
-const Team: React.FC<IProps> = ({ players, teamRecord, teams }) => {
-	const dateFormat = 'YYYY-MM-DD'
+const TeamRow: React.FC<IProps> = ({
+	dates,
+	playersPicked,
+	teamRecord,
+	teams,
+}) => {
 	const { data: games, isError } = useGetGames(teamRecord.teamAbbrev.default)
 
 	if (isError) return <Alert variant='warning'>Error fetching team</Alert>
-
-	const week1Start = moment().format(dateFormat)
-	const week1End = moment().add(6, 'days').format(dateFormat)
-	const week2Start = moment().add(7, 'days').format(dateFormat)
-	const week2End = moment().add(13, 'days').format(dateFormat)
-	const week3Start = moment().add(14, 'days').format(dateFormat)
-	const week3End = moment().add(20, 'days').format(dateFormat)
-	const week4Start = moment().add(21, 'days').format(dateFormat)
-	const week4End = moment().add(27, 'days').format(dateFormat)
 
 	return games ? (
 		<tr>
 			<td>{teamRecord.leagueSequence}</td>
 			<td>{teamRecord.leagueL10Sequence}</td>
 			<td className='text-center'>
-				<Image src={getLogoUrl(teamRecord.teamAbbrev.default)} />
+				<Logo teamAbbrev={teamRecord.teamAbbrev.default} />
 			</td>
 			<td>{teamRecord.teamName.default}</td>
 			<td>
@@ -73,10 +67,12 @@ const Team: React.FC<IProps> = ({ players, teamRecord, teams }) => {
 			<td>
 				<Week
 					games={games.filter(
-						(game) => game.gameDate >= week1Start && game.gameDate <= week1End
+						(game) =>
+							game.gameDate >= dates.week1Start &&
+							game.gameDate <= dates.week1End
 					)}
-					endDate={week1End}
-					startDate={week1Start}
+					endDate={dates.week1End}
+					startDate={dates.week1Start}
 					teamAbbrev={teamRecord.teamAbbrev.default}
 					teams={teams}
 				/>
@@ -84,10 +80,12 @@ const Team: React.FC<IProps> = ({ players, teamRecord, teams }) => {
 			<td>
 				<Week
 					games={games.filter(
-						(game) => game.gameDate >= week2Start && game.gameDate <= week2End
+						(game) =>
+							game.gameDate >= dates.week2Start &&
+							game.gameDate <= dates.week2End
 					)}
-					endDate={week2End}
-					startDate={week2Start}
+					endDate={dates.week2End}
+					startDate={dates.week2Start}
 					teamAbbrev={teamRecord.teamAbbrev.default}
 					teams={teams}
 				/>
@@ -95,10 +93,12 @@ const Team: React.FC<IProps> = ({ players, teamRecord, teams }) => {
 			<td>
 				<Week
 					games={games.filter(
-						(game) => game.gameDate >= week3Start && game.gameDate <= week3End
+						(game) =>
+							game.gameDate >= dates.week3Start &&
+							game.gameDate <= dates.week3End
 					)}
-					endDate={week3End}
-					startDate={week3Start}
+					endDate={dates.week3End}
+					startDate={dates.week3Start}
 					teamAbbrev={teamRecord.teamAbbrev.default}
 					teams={teams}
 				/>
@@ -106,26 +106,28 @@ const Team: React.FC<IProps> = ({ players, teamRecord, teams }) => {
 			<td>
 				<Week
 					games={games.filter(
-						(game) => game.gameDate >= week4Start && game.gameDate <= week4End
+						(game) =>
+							game.gameDate >= dates.week4Start &&
+							game.gameDate <= dates.week4End
 					)}
-					endDate={week4End}
-					startDate={week4Start}
+					endDate={dates.week4End}
+					startDate={dates.week4Start}
 					teamAbbrev={teamRecord.teamAbbrev.default}
 					teams={teams}
 				/>
 			</td>
 			<td className='text-end'>
-				{players
+				{playersPicked
 					?.filter((player) => player.picker === 'A')
 					.sort((a, b) => a.jersey - b.jersey)
 					.map((player) => player.jersey)
 					.join(', ')}
 			</td>
 			<td className='text-center'>
-				<Image src={getLogoUrl(teamRecord.teamAbbrev.default)} />
+				<Logo teamAbbrev={teamRecord.teamAbbrev.default} />
 			</td>
 			<td>
-				{players
+				{playersPicked
 					?.filter((player) => player.picker !== 'A')
 					.sort((a, b) => a.jersey - b.jersey)
 					.map((player) => `${player.picker}${player.jersey}`)
@@ -137,4 +139,4 @@ const Team: React.FC<IProps> = ({ players, teamRecord, teams }) => {
 	)
 }
 
-export default Team
+export default TeamRow

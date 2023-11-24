@@ -10,6 +10,17 @@ export type Game = {
 	homeTeam: Team
 }
 
+export type Dates = {
+	week1Start: string
+	week1End: string
+	week2Start: string
+	week2End: string
+	week3Start: string
+	week3End: string
+	week4Start: string
+	week4End: string
+}
+
 export type Player = {
 	id: number
 	name: string

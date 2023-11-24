@@ -1,3 +1,4 @@
+import { useCreatePlayer } from '../hooks/usePlayers'
 import { useState } from 'react'
 import Button from 'react-bootstrap/Button'
 import Col from 'react-bootstrap/Col'
@@ -5,10 +6,12 @@ import Row from 'react-bootstrap/Row'
 import Form from 'react-bootstrap/Form'
 import type { Player, Team } from '../types'
 
-const PlayerAdd = (props: {
-	teams: Team[]
-	onSubmit: (player: Player) => void
-}) => {
+interface IProps {
+	playersAll?: Player[]
+	teams?: Team[]
+}
+
+const PlayerAdd: React.FC<IProps> = ({ playersAll, teams }) => {
 	const [id, setId] = useState(0)
 	const [jersey, setJersey] = useState(0)
 	const [name, setName] = useState('')
@@ -16,13 +19,18 @@ const PlayerAdd = (props: {
 	const [pos, setPos] = useState('')
 	const [teamAbbrev, setTeamAbbrev] = useState('')
 
+	const createPlayer = useCreatePlayer()
+
 	const playerAdd = (e: React.FormEvent) => {
 		e.preventDefault()
 
 		if (!teamAbbrev || !pos || !jersey || !picker || !id)
 			return alert('Missing values')
 
-		const playerNew: Player = {
+		if (playersAll?.find((player) => player.id === id))
+			return alert('Player already exists')
+
+		const playerToAdd: Player = {
 			id,
 			name,
 			jersey,
@@ -31,7 +39,7 @@ const PlayerAdd = (props: {
 			picker,
 		}
 
-		props.onSubmit(playerNew)
+		createPlayer.mutate(playerToAdd)
 
 		setId(0)
 		setJersey(0)
@@ -65,8 +73,8 @@ const PlayerAdd = (props: {
 				<Col>
 					<Form.Select onChange={(e) => setTeamAbbrev(e.target.value)}>
 						<option value={''}>Team</option>
-						{props.teams
-							.sort((a, b) => a.name.localeCompare(b.name))
+						{teams
+							?.sort((a, b) => a.name.localeCompare(b.name))
 							.map((team, index) => (
 								<option key={index} value={team.abbrev}>
 									{team.name}

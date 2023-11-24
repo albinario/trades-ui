@@ -24,13 +24,13 @@ const App = () => {
 			<Routes>
 				<Route
 					path='/trades-ui'
-					element={<Picks players={players} teams={teams} />}
+					element={<Picks playersAll={players} teams={teams} />}
 				/>
 				<Route
 					path='/schedule'
 					element={
 						<Schedule
-							players={players?.filter((player) => player.picker)}
+							playersPicked={players?.filter((player) => player.picker)}
 							teamRecords={teamRecords}
 							teams={teams}
 						/>
