@@ -2,6 +2,7 @@ import Navigation from './components/Navigation'
 import './App.css'
 import { useGetPlayers } from './hooks/usePlayers'
 import { useGetTeamRecords } from './hooks/useGetTeamRecords'
+import Home from './pages/Home'
 import Picks from './pages/Picks'
 import Schedule from './pages/Schedule'
 import Container from 'react-bootstrap/Container'
@@ -22,6 +23,7 @@ const App = () => {
 			<Navigation />
 
 			<Routes>
+				<Route path='/' element={<Home />} />
 				<Route
 					path='/trades-ui'
 					element={<Picks playersAll={players} teams={teams} />}
