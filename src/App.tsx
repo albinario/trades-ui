@@ -25,7 +25,7 @@ const App = () => {
 			<Routes>
 				<Route path='/' element={<Home />} />
 				<Route
-					path='/trades-ui'
+					path='/picks'
 					element={<Picks playersAll={players} teams={teams} />}
 				/>
 				<Route
