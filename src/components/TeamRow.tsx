@@ -33,7 +33,7 @@ const TeamRow: React.FC<IProps> = ({
 				{teamRecord.l10Wins}-{teamRecord.l10Losses}-{teamRecord.l10OtLosses}
 			</td>
 			<td>
-				{teamRecord.l10GoalsAgainst}-{teamRecord.l10GoalsFor}
+				{teamRecord.l10GoalsFor}-{teamRecord.l10GoalsAgainst}
 			</td>
 			<td>
 				{teamRecord.streakCode}
