@@ -16,7 +16,7 @@ const PlayerEditForm: React.FC<IProps> = ({ playersAll, teams }) => {
 	const [picker, setPicker] = useState('')
 	const [playerToEditId, setPlayerToEditId] = useState(0)
 	const [pos, setPos] = useState('')
-	const [search, setSearch] = useState('')
+	const [searchInput, setSearchInput] = useState('')
 	const [teamAbbrev, setTeamAbbrev] = useState('')
 
 	const updatePlayer = useUpdatePlayer()
@@ -36,7 +36,7 @@ const PlayerEditForm: React.FC<IProps> = ({ playersAll, teams }) => {
 
 		updatePlayer.mutate(playerToEdit)
 
-		setSearch('')
+		setSearchInput('')
 		setPicker('')
 		setJersey(0)
 		setPos('')
@@ -47,10 +47,10 @@ const PlayerEditForm: React.FC<IProps> = ({ playersAll, teams }) => {
 			<Row className='g-1'>
 				<Col>
 					<Form.Control
-						onChange={(e) => setSearch(e.target.value)}
+						onChange={(e) => setSearchInput(e.target.value)}
 						placeholder='Search'
 						type='text'
-						value={search}
+						value={searchInput}
 					/>
 				</Col>
 
@@ -61,7 +61,9 @@ const PlayerEditForm: React.FC<IProps> = ({ playersAll, teams }) => {
 						<option value={0}>Player</option>
 						{playersAll
 							?.filter((player: Player) =>
-								player.name.toLowerCase().includes(search.toLocaleLowerCase())
+								player.name
+									.toLowerCase()
+									.includes(searchInput.toLocaleLowerCase())
 							)
 							.map((player: Player) => (
 								<option key={player.id} value={player.id}>
@@ -86,7 +88,7 @@ const PlayerEditForm: React.FC<IProps> = ({ playersAll, teams }) => {
 
 				<Col>
 					<Form.Control
-						onChange={(e) => setPicker(e.target.value)}
+						onChange={(e) => setPicker(e.target.value.toUpperCase())}
 						placeholder='Picker'
 						type='text'
 						value={picker}
@@ -104,7 +106,7 @@ const PlayerEditForm: React.FC<IProps> = ({ playersAll, teams }) => {
 
 				<Col>
 					<Form.Control
-						onChange={(e) => setPos(e.target.value)}
+						onChange={(e) => setPos(e.target.value.toUpperCase())}
 						placeholder='Pos'
 						type='text'
 						value={pos}
