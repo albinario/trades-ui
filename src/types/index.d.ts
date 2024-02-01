@@ -34,6 +34,14 @@ export type PlayersResponse = {
 	data: Player[]
 }
 
+export type PlayerSearch = {
+	name: string
+	playerId: string
+	positionCode: string
+	sweaterNumber: number
+	teamAbbrev: string
+}
+
 export type Team = {
 	abbrev: string
 	name: string

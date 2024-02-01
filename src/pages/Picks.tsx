@@ -13,7 +13,7 @@ interface IProps {
 const Picks: React.FC<IProps> = ({ playersAll, teams }) => (
 	<>
 		<h4>Add</h4>
-		<PlayerAddForm playersAll={playersAll} teams={teams} />
+		<PlayerAddForm playersAll={playersAll} />
 
 		<h4 className='mt-4'>Edit</h4>
 		<PlayerEditForm playersAll={playersAll} teams={teams} />

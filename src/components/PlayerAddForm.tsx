@@ -4,34 +4,54 @@ import Button from 'react-bootstrap/Button'
 import Col from 'react-bootstrap/Col'
 import Row from 'react-bootstrap/Row'
 import Form from 'react-bootstrap/Form'
-import type { Player, Team } from '../types'
+import { searchPlayers } from '../services/SearchAPI'
+import type { Player, PlayerSearch } from '../types'
 
 interface IProps {
 	playersAll?: Player[]
-	teams?: Team[]
 }
 
-const PlayerAdd: React.FC<IProps> = ({ playersAll, teams }) => {
-	const [id, setId] = useState(0)
+const PlayerAdd: React.FC<IProps> = ({ playersAll }) => {
 	const [jersey, setJersey] = useState(0)
 	const [name, setName] = useState('')
 	const [picker, setPicker] = useState('')
+	const [playerToAddId, setPlayerToAddId] = useState(0)
+	const [players, setPlayers] = useState<PlayerSearch[] | null>(null)
 	const [pos, setPos] = useState('')
+	const [searchInput, setSearchInput] = useState('')
 	const [teamAbbrev, setTeamAbbrev] = useState('')
 
 	const createPlayer = useCreatePlayer()
 
+	const search = async () => {
+		const players = await searchPlayers(searchInput)
+		setPlayers(players.filter((player) => player.sweaterNumber))
+	}
+
+	const setPlayerToAddStates = (id: string) => {
+		const player = players?.find((player) => player.playerId === id)
+
+		if (player) {
+			setJersey(player.sweaterNumber)
+			setName(player.name)
+			setPlayerToAddId(Number(id))
+			setPos(
+				player.positionCode === 'L' || player.positionCode === 'R'
+					? 'W'
+					: player.positionCode
+			)
+			setTeamAbbrev(player.teamAbbrev)
+		}
+	}
+
 	const playerAdd = (e: React.FormEvent) => {
 		e.preventDefault()
 
-		if (!teamAbbrev || !pos || !jersey || !picker || !id)
-			return alert('Missing values')
-
-		if (playersAll?.find((player) => player.id === id))
-			return alert('Player already exists')
+		if (playersAll?.find((player) => player.id === playerToAddId))
+			return alert('Player already added')
 
 		const playerToAdd: Player = {
-			id,
+			id: playerToAddId,
 			name,
 			jersey,
 			pos,
@@ -39,9 +59,10 @@ const PlayerAdd: React.FC<IProps> = ({ playersAll, teams }) => {
 			picker,
 		}
 
+		console.log(playerToAdd)
+
 		createPlayer.mutate(playerToAdd)
 
-		setId(0)
 		setJersey(0)
 		setName('')
 		setPicker('')
@@ -53,39 +74,39 @@ const PlayerAdd: React.FC<IProps> = ({ playersAll, teams }) => {
 			<Row className='g-1'>
 				<Col>
 					<Form.Control
-						onChange={(e) => setName(e.target.value)}
-						placeholder='Name'
-						required
+						onChange={(e) => setSearchInput(e.target.value)}
+						placeholder='Search'
 						type='text'
-						value={name}
+						value={searchInput}
 					/>
 				</Col>
 
 				<Col>
-					<Form.Control
-						onChange={(e) => setId(Number(e.target.value))}
-						placeholder='id'
-						type='number'
-						value={id ? id : ''}
-					/>
+					<Button
+						className='form-control'
+						disabled={!searchInput}
+						onClick={search}
+						type='button'
+						variant='outline-success'
+					>
+						🔎
+					</Button>
 				</Col>
 
 				<Col>
-					<Form.Select onChange={(e) => setTeamAbbrev(e.target.value)}>
-						<option value={''}>Team</option>
-						{teams
-							?.sort((a, b) => a.name.localeCompare(b.name))
-							.map((team, index) => (
-								<option key={index} value={team.abbrev}>
-									{team.name}
-								</option>
-							))}
+					<Form.Select onChange={(e) => setPlayerToAddStates(e.target.value)}>
+						<option value={0}>Player</option>
+						{players?.map((player) => (
+							<option key={player.playerId} value={player.playerId}>
+								{player.name}
+							</option>
+						))}
 					</Form.Select>
 				</Col>
 
 				<Col>
 					<Form.Control
-						onChange={(e) => setPicker(e.target.value)}
+						onChange={(e) => setPicker(e.target.value.toUpperCase())}
 						placeholder='Picker'
 						type='text'
 						value={picker}
@@ -93,25 +114,10 @@ const PlayerAdd: React.FC<IProps> = ({ playersAll, teams }) => {
 				</Col>
 
 				<Col>
-					<Form.Control
-						onChange={(e) => setJersey(Number(e.target.value))}
-						placeholder='Jersey'
-						type='number'
-						value={jersey ? jersey : ''}
-					/>
-				</Col>
-
-				<Col>
-					<Form.Control
-						onChange={(e) => setPos(e.target.value)}
-						placeholder='Pos'
-						type='text'
-						value={pos}
-					/>
-				</Col>
-
-				<Col>
 					<Button
+						disabled={
+							!teamAbbrev || !pos || !jersey || !picker || !playerToAddId
+						}
 						type='submit'
 						className='form-control'
 						variant='outline-success'
