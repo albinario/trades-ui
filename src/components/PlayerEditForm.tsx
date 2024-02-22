@@ -74,6 +74,15 @@ const PlayerEditForm: React.FC<IProps> = ({ playersAll, teams }) => {
 				</Col>
 
 				<Col>
+					<Form.Control
+						onChange={(e) => setPicker(e.target.value.toUpperCase())}
+						placeholder='Picker'
+						type='text'
+						value={picker}
+					/>
+				</Col>
+
+				<Col>
 					<Form.Select onChange={(e) => setTeamAbbrev(e.target.value)}>
 						<option value={''}>Team</option>
 						{teams
@@ -84,15 +93,6 @@ const PlayerEditForm: React.FC<IProps> = ({ playersAll, teams }) => {
 								</option>
 							))}
 					</Form.Select>
-				</Col>
-
-				<Col>
-					<Form.Control
-						onChange={(e) => setPicker(e.target.value.toUpperCase())}
-						placeholder='Picker'
-						type='text'
-						value={picker}
-					/>
 				</Col>
 
 				<Col>
