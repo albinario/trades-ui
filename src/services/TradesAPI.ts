@@ -1,7 +1,7 @@
 import axios from 'axios'
 import type { Player, PlayersResponse } from '../types'
 
-const BASE_URL = 'https://trades.cyclic.app/players'
+const BASE_URL = 'https://trades-api.onrender.com/players'
 
 const instance = axios.create({
 	baseURL: BASE_URL,
